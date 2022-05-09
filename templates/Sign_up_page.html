@@ -15,10 +15,28 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Stylish&display=swap" rel="stylesheet">
 
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&display=swap" rel="stylesheet">
+
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+
+
+    <style>
+        *{font-family: 'Noto Sans KR', sans-serif;}
+        .title {text-align:center; font-family: 'Courier Prime', monospace;
+            font-size:80px; color:#fff; -webkit-text-stroke: 1px #000;}
+        .is-sparta {background-color:#8e44ad; color:#fff; font-weight:500;}
+        h1 { font-size:54px; text-align:center; margin-bottom:20px; }
+        .container{background-color:#e0e0e0; height:550px;}
+        .box {background-color:#e0e0e0; box-shadow:none;}
+        .input {font-weight:bold;}
+        .button:hover{color:#8e44ad; background-color:#fff; transition-duration:0.3s;}
+    </style>
 
     <script>
         function is_nickname(asValue) {
@@ -120,16 +138,31 @@
     </script>
 
 
+
 </head>
 <body>
+
+<section class="hero">
+  <div class="hero-body">
+    <p class="title">
+      My-Hidden-Song
+    </p>
+  </div>
+</section>
     <section class="section">
+
         <div class="container">
+
             <div class="box" style="max-width: 480px;margin:auto">
+                <h1>회원가입</h1>
                 <article class="media">
+
                     <div class="media-content">
                         <div class="content">
                             <div class="field has-addons">
+
                                 <div class="control has-icons-left" style="width:100%">
+
                                     <input id="input-username" class="input" type="text" placeholder="아이디">
                                     <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
                                 </div>
