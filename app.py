@@ -33,12 +33,12 @@ def add_song():
     data = requests.get(gini_url, headers=headers)
     soup = BeautifulSoup(data.text, 'html.parser')
 
-    album = soup.select('#body-content > div.song-main-infos > div.photo-zone > a > span.cover > img')[0]['src']
+    album = soup.select('#body-content > div.song-main-infos > div.photo-zone > a > span.cover > img')[0]['src'].strip()
 
-    music = soup.select('#body-content > div.song-main-infos > div.info-zone > h2')[0].text
+    music = soup.select('#body-content > div.song-main-infos > div.info-zone > h2')[0].text.strip()
 
-    artist = soup.select('#body-content > div.song-main-infos > div.info-zone > ul > li:nth-child(1) > span.value > a')[0].text
-    print(album,music,artist)
+    artist = soup.select('#body-content > div.song-main-infos > div.info-zone > ul > li:nth-child(1) > span.value > a')[0].text.strip()
+    print(album, music, artist)
     return render_template('music_list.html')
 
 # Add Song Branch End
