@@ -14,6 +14,20 @@ db = client.MyHiddenSong
 
 # Login Branc Start
 
+@app.route('/')
+def home():
+    token = request.cookies.get('mytoken')
+    if token is not None:
+        payload = jwt.decode(token, TOKEN_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"id": payload["id"]})
+        if user_info is None:
+            return render_template('index.html', msg='로그인 정보가 없습니다.')
+
+        return render_template('list.html', user_info=user_info)
+    else:
+        return render_template('index.html')
+
+
 @app.route('/sign_in', methods=['POST'])
 def sign_in():
     id = request.form['id']
