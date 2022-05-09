@@ -16,18 +16,26 @@ def sign_up_page():
 
 @app.route('/sign_up/check_dup', methods=['POST'])
 def check_dup():
-    username_receive = request.form['username_give']
-    exists = bool(db.users.find_one({"username": username_receive}))
+    id_receive = request.form['id_give']
+    exists = bool(db.users.find_one({"id": id_receive}))
+    return jsonify({'result': 'success', 'exists': exists})
+
+@app.route('/sign_up/check_dup_nick', methods=['POST'])
+def check_dup_nick():
+    nick_receive = request.form['nick_give']
+    exists = bool(db.users.find_one({"nick": nick_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
 @app.route('/sign_up/save', methods=['POST'])
 def sign_up():
-    username_receive = request.form['username_give']
-    password_receive = request.form['password_give']
-    password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    id_receive = request.form['id_give']
+    pw_receive = request.form['pw_give']
+    pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
+    nick_recive = request.form['nick_give']
     doc = {
-        "username": username_receive,                                   # 아이디
-        "password": password_hash,                                      # 비밀번호
+        "id": id_receive,                                   # 아이디
+        "pw": pw_hash,                                      # 비밀번호
+        "nick": nick_recive
     }
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
