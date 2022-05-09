@@ -14,6 +14,10 @@ db = client.MyHiddenSong
 def sign_up_page():
     return render_template('Sign_up_page.html')
 
+@app.route('/music_list')
+def music_list():
+    return render_template('music_list.html')
+
 @app.route('/sign_up/check_dup', methods=['POST'])
 def check_dup():
     id_receive = request.form['id_give']
