@@ -1,14 +1,7 @@
 from pymongo import MongoClient
-import jwt
-import datetime
-import hashlib
-from flask import Flask, render_template, jsonify, request, redirect, url_for
-from werkzeug.utils import secure_filename
-from datetime import datetime, timedelta
+from flask import Flask
 
 app = Flask(__name__)
-
-SECRET_KEY = 'SPARTA'
 
 client = MongoClient('13.125.152.229', 27017, username="test", password="test")
 db = client.MyHiddenSong
