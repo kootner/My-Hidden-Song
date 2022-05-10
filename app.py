@@ -228,7 +228,9 @@ def heart():
 
 @app.route('/getYoutubeUrl', methods=['GET'])
 def getYoutubeUrl():
-    youtubeUrl_temp=db.musics.find_one(sort=[("reco", -1)])
+    # youtubeUrl_temp=db.musics.find_one(sort=[("reco", -1)]) # 추천수 많은 영상 재생
+    youtubeUrl_temp=list(db.musics.aggregate([{'$sample': { 'size': 1 } }]))[0] # 랜덤재생
+    print(youtubeUrl_temp)
     if youtubeUrl_temp is None:
         return jsonify({'result': 'fail', 'msg': "노래 정보가 없습니다."})
     youtubeUrl_temp=youtubeUrl_temp["youtube_url"]
