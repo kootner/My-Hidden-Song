@@ -29,6 +29,12 @@
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
                 crossorigin="anonymous"></script>
 
+    <!-- 제이쿼리 쿠키 삭제 cdn-->
+
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+
+
 
     <style>
         *{font-family: 'Noto Sans KR', sans-serif; color:#000;}
@@ -66,49 +72,47 @@
 
     <script>
 
-        $(document).ready(function(){
+        $(document).ready(function () {
 
             showMusic();
 
 
+            $(".button").mouseover(function () {
+                $(this).css({"color": "#8e44ad", "background-color": "#fff", "transition-duration": "0.3s"});
+            });
 
+            $(".button").mouseout(function () {
+                $(this).css({"color": "#fff", "background-color": "#8e44ad", "transition-duration": "0.3s"});
+            });
 
-            $(".button").mouseover(function() {
-            $(this).css({"color":"#8e44ad","background-color":"#fff","transition-duration":"0.3s"});
-        });
+            $(".button_logout").mouseover(function () {
+                $(this).css({"color": "#fff", "background-color": "#8e44ad", "transition-duration": "0.3s"});
+            });
 
-            $(".button").mouseout(function() {
-            $(this).css({"color":"#fff","background-color":"#8e44ad","transition-duration":"0.3s"});
-        });
-
-            $(".button_logout").mouseover(function() {
-            $(this).css({"color":"#fff","background-color":"#8e44ad","transition-duration":"0.3s"});
-        });
-
-            $(".button_logout").mouseout(function() {
-            $(this).css({"color":"#8e44ad","background-color":"#fff","transition-duration":"0.3s"});
-        });
-
+            $(".button_logout").mouseout(function () {
+                $(this).css({"color": "#8e44ad", "background-color": "#fff", "transition-duration": "0.3s"});
+            });
 
 
         });
 
-          function showMusic() {
-                $.ajax({
-                    type: "GET",
-                    url: "/music_list/data",
-                    data: {},
-                    success: function (response) {
-                        let music_data = response['all_music']
-                        console.log(music_data);
-                        for (let i = 0; i < music_data.length; i++) {
-                            let album = music_data[i]['album']
-                            let music = music_data[i]['music']
-                            let artist = music_data[i]['artist']
-                            let comment = music_data[i]['comment']
-                            let nick = music_data[i]['nick']
 
-                            let temp_html = `<div class="card">
+        function showMusic() {
+            $.ajax({
+                type: "GET",
+                url: "/music_list/data",
+                data: {},
+                success: function (response) {
+                    let music_data = response['all_music']
+                    console.log(music_data);
+                    for (let i = 0; i < music_data.length; i++) {
+                        let album = music_data[i]['album']
+                        let music = music_data[i]['music']
+                        let artist = music_data[i]['artist']
+                        let comment = music_data[i]['comment']
+                        let nick = music_data[i]['nick']
+
+                        let temp_html = `<div class="card">
                                                 <div class="card-image">
                                                     <figure class="image is-250x250">
                                                         <img src="${album}" alt="Placeholder image">
@@ -128,20 +132,27 @@
                                                 </div>
                                                         <span id="like_count">3</span><i class="fa-solid fa-heart" id="recommend_icon"></i>
                                             </div>`
-                            $('#card-box').append(temp_html)
-                        }
-                    },
-                    complete: function (response) {
-                        $("i").mouseover(function() {
-                            $(this).css({"color":"#ff0000","cursor":"pointer","transition-duration":"0.3s"});
-                        });
-
-                        $("i").mouseout(function() {
-                            $(this).css({"color":"#8e44ad","transition-duration":"0.3s"});
-                        });
+                        $('#card-box').append(temp_html)
                     }
-                })
-            }
+                },
+                complete: function (response) {
+                    $("i").mouseover(function () {
+                        $(this).css({"color": "#ff0000", "cursor": "pointer", "transition-duration": "0.3s"});
+                    });
+
+                    $("i").mouseout(function () {
+                        $(this).css({"color": "#8e44ad", "transition-duration": "0.3s"});
+                    });
+                }
+            })
+        }
+
+        function logout() {
+            $.removeCookie('mytoken',{path: '/'});
+            alert('로그아웃!')
+            window.location.href = '/login'
+        }
+
     </script>
 
 </head>
@@ -151,7 +162,7 @@
             <p class="title">
                 My-Hidden-Song
             </p>
-            <button class="button button_logout">로그아웃</button>
+            <button class="button button_logout" onclick="logout()">로그아웃</button>
             <button class="button" onclick="window.location.href='/add_song_page'">노래 업로드</button>
         </div>
     </section>
