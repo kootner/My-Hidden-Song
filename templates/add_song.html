@@ -17,10 +17,25 @@
                         position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);}
     </style>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
 <script>
-    function how_to_gini() {
-        
-    }
+
+    $().ready(function () {
+
+
+        $("#how_to_gini").click(function () {
+            $("#gini_modal").show();
+        })
+        $("#gini_modal").click(function () {
+            $("#gini_modal").hide();
+        })
+
+
+    })
+
+
     function add_song() {
         let album = $("#help-album").attr("src")
         let music = $("#help-music").text()
@@ -139,7 +154,7 @@
                                 <div id="btn-check-dup" class="control">
 
 
-                                    <button class="button is-sparta" onclick="how_to_gini()">
+                                    <button class="button is-sparta" id="how_to_gini">
                                         <i class="fa fa-question-circle mr-1"></i>지니 URL 넣는 방법</button>
                                 </div>
 
