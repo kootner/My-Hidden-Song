@@ -106,7 +106,6 @@ def add_song():
 @app.route('/')
 def home():
     token = request.cookies.get('mytoken')
-    print(token)
     try:
         if token is not None:
             payload = jwt.decode(token, TOKEN_KEY, algorithms=['HS256'])
@@ -123,6 +122,8 @@ def home():
     except jwt.exceptions.DecodeError:
         print("로그인 정보가 없습니다")
         return render_template('index.html')
+
+
 
 @app.route('/login')
 def login():
@@ -181,6 +182,29 @@ def sign_up():
 def music_data():
     music_data = list(db.musics.find({}, {'_id': False}))
     return jsonify({'all_music': music_data})
+
+# Youtube Branch Start
+
+@app.route('/getYoutubeUrl', methods=['GET'])
+def getYoutubeUrl():
+    youtubeUrl_temp=db.musics.find_one(sort=[("reco", -1)])
+    if youtubeUrl_temp is None:
+        return jsonify({'result': 'fail', 'msg': "노래 정보가 없습니다."})
+    youtubeUrl_temp=youtubeUrl_temp["youtube_url"]
+    # Youtube code 추출
+    if "?v=" in youtubeUrl_temp:
+        # https://www.youtube.com/watch?v=Hbj48Cw87BQ&ab_channel=dingofreestyle
+        youtubeUrl=youtubeUrl_temp.split('?v=')[1].split("&")[0]
+    elif "youtu.be/" in youtubeUrl_temp:
+        # https://youtu.be/Hbj48Cw87BQ
+        youtubeUrl=youtubeUrl_temp.split('youtu.be/')[1].split("?")[0]
+    elif "/embed/" in youtubeUrl_temp:
+        # https://www.youtube.com/embed/OsA3iPO2fEg?autoplay=1&mute=1
+        youtubeUrl=youtubeUrl_temp.split('/embed/')[1].split("?")[0]
+
+    return jsonify({'result': 'success', 'youtubeUrl': youtubeUrl})
+
+# Youtube Branch End
 
 
 if __name__ == '__main__':
