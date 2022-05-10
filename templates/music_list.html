@@ -65,13 +65,7 @@
             showMusic();
 
 
-            $("i").mouseover(function() {
-            $(this).css({"color":"#ff0000","cursor":"pointer","transition-duration":"0.3s"});
-        });
 
-            $("i").mouseout(function() {
-            $(this).css({"color":"#8e44ad","transition-duration":"0.3s"});
-        });
 
             $(".button").mouseover(function() {
             $(this).css({"color":"#8e44ad","background-color":"#fff","transition-duration":"0.3s"});
@@ -120,6 +114,15 @@
                                             </div>`
                             $('#card-box').append(temp_html)
                         }
+                    },
+                    complete: function (response) {
+                        $("i").mouseover(function() {
+                            $(this).css({"color":"#ff0000","cursor":"pointer","transition-duration":"0.3s"});
+                        });
+
+                        $("i").mouseout(function() {
+                            $(this).css({"color":"#8e44ad","transition-duration":"0.3s"});
+                        });
                     }
                 })
             }

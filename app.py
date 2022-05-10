@@ -125,12 +125,6 @@ def home():
 
 
 
-@app.route('/login')
-def login():
-    msg = request.args.get("msg")
-    return render_template('index.html', msg=msg)
-
-
 @app.route('/sign_in', methods=['POST'])
 def sign_in():
     id_receive = request.form['id_give']
