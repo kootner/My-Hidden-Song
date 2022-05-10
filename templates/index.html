@@ -1,23 +1,121 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+        <!-- Webpage Title -->
+        <title>Log In</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+        <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+        <meta property="og:title" content="스위터 - 세상을 달달하게"/>
+        <meta property="og:description" content="mini project for Web Plus"/>
+        <meta property="og:image" content="{{ url_for('static', filename='ogimg.png') }}"/>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+        <!-- Bulma CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+        <!-- Font Awesome CSS -->
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Stylish&display=swap" rel="stylesheet">
+        <link href="{{ url_for('static', filename='mystyle.css') }}" rel="stylesheet">
+
+        <!-- JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+        <style>
+
+        </style>
+
+        <script>
+            // {% if msg %}
+                //    alert("{{ msg }}")
+                // {% endif %}
+
+            function sign_in() {
+                let id = $("#input-id").val()
+                let pw = $("#input-pw").val()
+
+                if (id == "") {
+                    $("#help-id-login").text("아이디를 입력해주세요.")
+                    $("#input-id").focus()
+                    return;
+                } else {
+                    $("#help-id-login").text("")
+                }
+
+                if (pw == "") {
+                    $("#help-pw-login").text("비밀번호를 입력해주세요.")
+                    $("#input-pw").focus()
+                    return;
+                } else {
+                    $("#help-pw-login").text("")
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/sign_in",
+                    data: {
+                        id_give: id,
+                        pw_give: pw
+                    },
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+                            $.cookie('mytoken', response['token'], {path: '/'});
+                            window.location.replace("/")
+                        } else {
+                            alert(response['msg'])
+                        }
+                    }
+                });
+            }
+
+
+        </script>
 
 </head>
 <body>
-<section class="hero is-primary">
-  <div class="hero-body">
-    <p class="title">
-      My-Hidden-Song
-    </p>
-    <p class="subtitle">
-      Primary subtitle
-    </p>
-  </div>
-</section>
-
+        <section class="section">
+            <div class="container">
+                <div class="box" style="max-width: 480px;margin:auto">
+                    <article class="media">
+                        <div class="media-content">
+                            <div class="content">
+                                <div class="field has-addons">
+                                    <div class="control has-icons-left" style="width:100%">
+                                        <input id="input-id" class="input" type="text" placeholder="아이디">
+                                        <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+                                    </div>
+                                </div>
+                                <p id="help-id-login" class="help is-danger"></p>
+                                <div class="field">
+                                    <div class="control has-icons-left">
+                                        <input id="input-pw" class="input" type="password" placeholder="비밀번호">
+                                        <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                                    </div>
+                                    <p id="help-pw-login" class="help is-danger"></p>
+                                </div>
+                            </div>
+                            <div id="div-sign-in-or-up" class="has-text-centered">
+                                <nav class="level is-mobile">
+                                    <button class="level-item button is-sparta" onclick="sign_in()">
+                                        로그인
+                                    </button>
+                                </nav>
+                                <hr>
+                                <h4 class="mb-3">아직 회원이 아니라면</h4>
+                                <nav class="level is-mobile">
+                                    <button class="level-item button is-sparta is-outlined"
+                                            onclick="window.location.href='/sign_up'">
+                                        회원가입하기
+                                    </button>
+                                </nav>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
 </body>
 </html>
