@@ -16,6 +16,10 @@ db = client.MyHiddenSong
 def sign_up_page():
     return render_template('Sign_up_page.html')
 
+@app.route('/music_list')
+def music_list():
+    return render_template('music_list.html')
+
 @app.route('/sign_up/check_dup', methods=['POST'])
 def check_dup():
     id_receive = request.form['id_give']
@@ -41,6 +45,7 @@ def sign_up():
     }
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
+
 
 @app.route('/')
 def home():
@@ -88,6 +93,12 @@ def sign_in():
     else:
         return jsonify({'result': 'fail', 'msg': "로그인 실패!"})
 
+
+
+@app.route('/music_list/data', methods=['GET'])
+def music_data():
+    music_data = list(db.musics.find({}, {'_id': False}))
+    return jsonify({'all_music': music_data})
 
 
 if __name__ == '__main__':
