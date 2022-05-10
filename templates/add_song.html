@@ -1,0 +1,166 @@
+{% extends "layout.html" %}
+{% block content %}
+<script>
+    function how_to_gini() {
+        
+    }
+    function add_song() {
+        let album = $("#help-album").attr("src")
+        let music = $("#help-music").text()
+        let artist = $("#help-artist").text()
+        let comment = $("#input-comment").val()
+        let youtube_url = $("#input-youtube_url").val()
+        let gini_url = $("#help-gini_url").text()
+        if(gini_url == ""){
+            alert("노래 불러오기를 해주세요")
+            return
+        }
+        if(youtube_url == ""){
+            alert("유튜브 url을 입력해 주세요")
+            return
+        }
+        if(comment == ""){
+            alert("코멘트를 입력해 주세요")
+            return
+        }
+        $.ajax({
+            type: "GET",
+            url: "/add_song",
+            data: {
+                album: album,
+                music: music,
+                artist: artist,
+                comment: comment,
+                youtube_url: youtube_url,
+                gini_url: gini_url
+            },
+            success: function (response) {
+                if(response['result'] == "success"){
+                    alert("노래 추가 성공")
+                    window.location.replace("/music_list")
+                }
+                else{
+                    alert(response["msg"])
+                }
+            }
+        });
+
+    }
+    function check_song() {
+        let gini_url = $("#input-gini_url").val()
+
+        $.ajax({
+            type: "GET",
+            url: "/check_song",
+            data: {
+                gini_url: gini_url
+            },
+            success: function (response) {
+                if (response["result"]=="fail") {
+                    $("#help-gini_url").text(response["msg"]).removeClass("is-safe").addClass("is-danger")
+                    $("#input-gini_url").focus()
+                    alert(response["msg"])
+                } else {
+                    $("#help-album").attr("src", response["album"])
+                    $("#help-music").text(response["music"])
+                    $("#help-artist").text(response["artist"])
+                    $("#help-gini_url").text(response["gini_url"])
+                    $("#music-info").show()
+                }
+
+            },
+            beforeSend: function (response) {
+                $("#help-loading").addClass("is-loading")
+            },
+            complete: function (response) {
+            },
+            error: function (response) {
+                alert("곡 정보를 불러오는데 실패했습니다.")
+                $("#help-album").attr("src", "")
+                $("#help-music").text("")
+                $("#help-artist").text("")
+                $("#help-gini_url").text("")
+                $("#music-info").hide()
+            }
+        });
+
+    }
+</script>
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="box" style="max-width: 480px;margin:auto">
+                <h1>노래 추가하기</h1>
+                <article class="media">
+
+                    <div class="media-content">
+                        <div class="content">
+                            <div class="field has-addons">
+
+                                <div class="control has-icons-left" style="width:100%">
+
+                                    <input id="input-gini_url" class="input" type="text" placeholder="지니 URL">
+
+                                    <span class="icon is-small is-left"><i class="fa fa-link"></i></span>
+                                </div>
+                                <div id="btn-check-dup" class="control">
+                                    <button class="button is-sparta" onclick="how_to_gini()"><i class="fa fa-question-circle mr-1"></i>지니 URL 넣는 방법</button>
+                                </div>
+
+                            </div>
+                            <p id="help-loading" class="help"></p>
+                            <div class="field" id="music-info" style="display: none;">
+                                <div class="columns">
+                                    <div class="column is-one-third">
+                                        <img id="help-album">
+                                    </div>
+                                    <div class="column is-two-third">
+                                        <p id="help-artist"></p>
+                                        <p id="help-music"></p>
+                                        <p id="help-gini_url" style="display: none;"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <nav class="level is-mobile">
+                                    <button class="level-item button is-sparta" onclick="check_song()">
+                                        노래 불러오기
+                                    </button>
+                                </nav>
+                            </div>
+                            <div class="field">
+                                <div class="control has-icons-left">
+                                    <input id="input-youtube_url" class="input" type="text" placeholder="유튜브 URL">
+                                    <span class="icon is-small is-left"><i class="fa fa-link"></i></span>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control has-icons-left">
+                                    <input id="input-comment" class="textarea" type="textarea" placeholder="코멘트">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div id="sign-up-box">
+                            <nav class="level is-mobile">
+                                <button class="level-item button is-sparta" onclick="add_song()">
+                                    노래 추가
+                                </button>
+                                <button class="level-item button is-sparta is-outlined" onclick="toggle_sign_up()">
+                                    취소
+                                </button>
+                            </nav>
+                        </div>
+
+
+                    </div>
+                </article>
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}
