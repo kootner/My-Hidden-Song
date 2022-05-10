@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>music list | My Hidden Song</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Stylish&display=swap" rel="stylesheet">
+
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&display=swap" rel="stylesheet">
+
+<<<<<<< HEAD
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/4fc2c0a9d6.js" crossorigin="anonymous"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+
+=======
+     <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+>>>>>>> 73d7a8c9d9c968bfd897ed62fdb857cb0b97f388
+
+    <style>
+        *{font-family: 'Noto Sans KR', sans-serif; color:#000;}
+        .title {text-align:center; font-family: 'Courier Prime', monospace;
+            font-size:80px; color:#fff; -webkit-text-stroke: 1px #000;}
+        .is-250x250 {width:350px; height:350px; background-color:#8c8c8c; margin-left:32px; margin-top:32px;}
+        .is-250x250 img {width:350px; height:350px;}
+
+        .card {background-color:#e0e0e0;
+            width:414px; height:664px; margin-left:160px; margin-bottom:100px;
+            box-sizing:border-box; float:left;}
+
+        .card-content {width:414px;
+            padding-left:32px; padding-right:32px; box-sizing:border-box;}
+
+        .button {width:180px; height:50px; background-color:#8e44ad; color:#fff;
+                position:absolute; right:180px; top:100px;}
+
+        i {font-size:30px; position:relative; float:right; color:#8e44ad;
+            bottom:20px; }
+
+        .media-content { border-bottom:4px double #000; padding-bottom:5px;
+        height:80px;}
+
+        #music {font-size:24px;}
+        #artist {font-size:20px;}
+        #nickname {font-weight:bolder;}
+    </style>
+
+    <script>
+
+        $(document).ready(function(){
+
+            showMusic();
+
+
+            $("i").mouseover(function() {
+            $(this).css({"color":"#ff0000","cursor":"pointer","transition-duration":"0.3s"});
+        });
+
+            $("i").mouseout(function() {
+            $(this).css({"color":"#8e44ad","transition-duration":"0.3s"});
+        });
+
+            $(".button").mouseover(function() {
+            $(this).css({"color":"#8e44ad","background-color":"#fff","transition-duration":"0.3s"});
+        });
+
+            $(".button").mouseout(function() {
+            $(this).css({"color":"#fff","background-color":"#8e44ad","transition-duration":"0.3s"});
+        });
+
+
+        });
+
+          function showMusic() {
+                $.ajax({
+                    type: "GET",
+                    url: "/music_list/data",
+                    data: {},
+                    success: function (response) {
+                        let music_data = response['all_music']
+                        console.log(music_data);
+                        for (let i = 0; i < music_data.length; i++) {
+                            let album = music_data[i]['album']
+                            let music = music_data[i]['music']
+                            let artist = music_data[i]['artist']
+                            let comment = music_data[i]['comment']
+                            let nick = music_data[i]['nick']
+
+                            let temp_html = `<div class="card">
+                                                <div class="card-image">
+                                                    <figure class="image is-250x250">
+                                                        <img src="${album}" alt="Placeholder image">
+                                                    </figure>
+                                                </div>
+                                                <div class="card-content">
+                                                    <div class="media">
+                                                        <div class="media-content">
+                                                            <p>${music}</p>
+                                                            <p>${artist}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="content">
+                                                        <span>${nick}</span> // <span>${comment}</span>
+                                                    </div>
+                                                        <i class="fa-solid fa-heart" id="recommend_icon"></i>
+                                                </div>
+                                            </div>`
+                            $('#card-box').append(temp_html)
+                        }
+                    }
+                })
+            }
+    </script>
+
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-body">
+            <p class="title">
+                My-Hidden-Song
+            </p>
+            <button class="button" onclick="window.location.href='/add_song'">노래 업로드</button>
+        </div>
+    </section>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <p class="title">
+      My-Hidden-Song
+    </p>
+      <button class="button" id="song_upload">노래 업로드 </button>
+  </div>
+</section>
+
+
+
+<div id="card-box">
+
+    <div class="card">
+  <div class="card-image">
+    <figure class="image is-250x250">
+      <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+    </figure>
+  </div>
+  <div class="card-content">
+    <div class="media">
+      <div class="media-content">
+        <p id="music">노래 제목</p>
+        <p id="artist">가수명</p>
+      </div>
+    </div>
+
+    <div class="content">
+      <span id="nickname">닉네임</span> // <span id="comment"> 코멘트 코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트
+    코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트</span>
+    </div>
+       <i class="fa-solid fa-heart" id="recommend_icon"></i>
+  </div>
+</div>
+
+    <div class="card">
+  <div class="card-image">
+    <figure class="image is-250x250">
+      <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+    </figure>
+  </div>
+  <div class="card-content">
+    <div class="media">
+      <div class="media-content">
+        <p id="music">노래 제목</p>
+        <p id="artist">가수명</p>
+      </div>
+    </div>
+
+    <div class="content">
+      <span id="nickname">닉네임</span> // <span id="comment"> 코멘트 코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트
+    코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트</span>
+    </div>
+       <i class="fa-solid fa-heart" id="recommend_icon"></i>
+  </div>
+</div>
+
+    <div class="card">
+  <div class="card-image">
+    <figure class="image is-250x250">
+      <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+    </figure>
+  </div>
+  <div class="card-content">
+    <div class="media">
+      <div class="media-content">
+        <p id="music">노래 제목</p>
+        <p id="artist">가수명</p>
+      </div>
+    </div>
+
+    <div class="content">
+      <span id="nickname">닉네임</span> // <span id="comment"> 코멘트 코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트
+    코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트</span>
+    </div>
+       <i class="fa-solid fa-heart" id="recommend_icon"></i>
+  </div>
+</div>
+
+    <div class="card">
+  <div class="card-image">
+    <figure class="image is-250x250">
+      <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+    </figure>
+  </div>
+  <div class="card-content">
+    <div class="media">
+      <div class="media-content">
+        <p id="music">노래 제목</p>
+        <p id="artist">가수명</p>
+      </div>
+    </div>
+
+    <div class="content">
+      <span id="nickname">닉네임</span> // <span id="comment"> 코멘트 코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트
+    코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트</span>
+    </div>
+       <i class="fa-solid fa-heart" id="recommend_icon"></i>
+  </div>
+</div>
+
+    </div>
+
+
+</body>
+</html>
+
