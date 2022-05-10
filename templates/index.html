@@ -33,7 +33,24 @@
             // {% if msg %}
                 //    alert("{{ msg }}")
                 // {% endif %}
-
+            $(document).ready(function(){
+                getYoutubeUrl()
+            });
+            function getYoutubeUrl(){
+                $.ajax({
+                    type: "GET",
+                    url: "/getYoutubeUrl",
+                    data: {
+                    },
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+                            $("#youtubeFrame").attr("src","https://www.youtube.com/embed/"+response['youtubeUrl']+"?autoplay=1&mute=1")
+                        } else {
+                            alert(response['msg']);
+                        }
+                    }
+                });
+            }
             function sign_in() {
                 let id = $("#input-id").val()
                 let pw = $("#input-pw").val()
@@ -78,42 +95,50 @@
 <body>
         <section class="section">
             <div class="container">
-                <div class="box" style="max-width: 480px;margin:auto">
-                    <article class="media">
-                        <div class="media-content">
-                            <div class="content">
-                                <div class="field has-addons">
-                                    <div class="control has-icons-left" style="width:100%">
-                                        <input id="input-id" class="input" type="text" placeholder="아이디">
-                                        <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+                <div class="columns">
+
+                    <div class="box column is-one-third" style="">
+                        <article class="media">
+                            <div class="media-content">
+                                <div class="content">
+                                    <div class="field has-addons">
+                                        <div class="control has-icons-left" style="width:100%">
+                                            <input id="input-id" class="input" type="text" placeholder="아이디">
+                                            <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+                                        </div>
+                                    </div>
+                                    <p id="help-id-login" class="help is-danger"></p>
+                                    <div class="field">
+                                        <div class="control has-icons-left">
+                                            <input id="input-pw" class="input" type="password" placeholder="비밀번호">
+                                            <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                                        </div>
+                                        <p id="help-pw-login" class="help is-danger"></p>
                                     </div>
                                 </div>
-                                <p id="help-id-login" class="help is-danger"></p>
-                                <div class="field">
-                                    <div class="control has-icons-left">
-                                        <input id="input-pw" class="input" type="password" placeholder="비밀번호">
-                                        <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
-                                    </div>
-                                    <p id="help-pw-login" class="help is-danger"></p>
+                                <div id="div-sign-in-or-up" class="has-text-centered">
+                                    <nav class="level is-mobile">
+                                        <button class="level-item button is-sparta" onclick="sign_in()">
+                                            로그인
+                                        </button>
+                                    </nav>
+                                    <hr>
+                                    <h4 class="mb-3">아직 회원이 아니라면</h4>
+                                    <nav class="level is-mobile">
+                                        <button class="level-item button is-sparta is-outlined"
+                                                onclick="window.location.href='/sign_up'">
+                                            회원가입하기
+                                        </button>
+                                    </nav>
                                 </div>
                             </div>
-                            <div id="div-sign-in-or-up" class="has-text-centered">
-                                <nav class="level is-mobile">
-                                    <button class="level-item button is-sparta" onclick="sign_in()">
-                                        로그인
-                                    </button>
-                                </nav>
-                                <hr>
-                                <h4 class="mb-3">아직 회원이 아니라면</h4>
-                                <nav class="level is-mobile">
-                                    <button class="level-item button is-sparta is-outlined"
-                                            onclick="window.location.href='/sign_up'">
-                                        회원가입하기
-                                    </button>
-                                </nav>
-                            </div>
-                        </div>
-                    </article>
+                        </article>
+                    </div>
+                    <div class="box column is-tow-third " style="margin-bottom:1.5em;">
+                        <figure class="image is-16by9">
+                          <iframe class="has-ratio" id="youtubeFrame" width="640" height="360" src="" frameborder="0" allowfullscreen allow="autoplay;mute;"></iframe>
+                        </figure>
+                    </div>
                 </div>
             </div>
         </section>
