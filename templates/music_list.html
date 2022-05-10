@@ -29,6 +29,12 @@
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
                 crossorigin="anonymous"></script>
 
+    <!-- 제이쿼리 쿠키 삭제 cdn-->
+
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+
+
 
     <style>
         *{font-family: 'Noto Sans KR', sans-serif; color:#000;}
@@ -47,8 +53,14 @@
         .button {width:180px; height:50px; background-color:#8e44ad; color:#fff;
                 position:absolute; right:180px; top:100px;}
 
-        i {font-size:30px; position:relative; float:right; color:#8e44ad;
-            bottom:20px; }
+        .button_logout {width:180px; height:50px; background-color:#fff; color:#8e44ad;
+                     position:absolute; left:160px; top:100px;}
+
+        i {font-size:30px; position:absolute; float:right; color:#8e44ad;
+            bottom:32px; right:32px; }
+
+        .like_count {font-size:18px; position:absolute; font-weight:bold;
+                        bottom:35px; right:70px; -webkit-text-stroke: 1px #000;}
 
         .media-content { border-bottom:4px double #000; padding-bottom:5px;
         height:80px;}
@@ -62,6 +74,7 @@
     </style>
 
     <script>
+
         $(document).ready(function(){
 
             {#showMusic();#}
@@ -85,7 +98,19 @@
             });
 
 
+            $(".button_logout").mouseover(function () {
+                $(this).css({"color": "#fff", "background-color": "#8e44ad", "transition-duration": "0.3s"});
+            });
+
+            $(".button_logout").mouseout(function () {
+                $(this).css({"color": "#8e44ad", "background-color": "#fff", "transition-duration": "0.3s"});
+
+            });
+
+
         });
+
+
 
           function showMusic() {
                 $.ajax({
@@ -108,7 +133,7 @@
                                 is_heart = "heart"
                             }
                             let temp_html = `<div class="card">
-                                                <div class="card-image">
+                                                    <div class="card-image">
                                                     <figure class="image is-250x250">
                                                         <img src="${album}" alt="Placeholder image">
                                                     </figure>
@@ -124,6 +149,7 @@
                                                         <span>${nick}</span> // <span>${comment}</span>
                                                     </div>
                                                         <i class="fa-solid fa-heart ${is_heart}" onclick="click_heart(${id})" id="recommend_icon${id}"></i>
+
                                                 </div>
                                             </div>`
                             $('#card-box').append(temp_html)
@@ -155,6 +181,14 @@
                 }
             })
         }
+
+
+        function logout() {
+            $.removeCookie('mytoken',{path: '/'});
+            alert('로그아웃!')
+            window.location.href = '/login'
+        }
+
     </script>
 
 </head>
@@ -164,6 +198,7 @@
             <p class="title">
                 My-Hidden-Song
             </p>
+            <button class="button button_logout" onclick="logout()">로그아웃</button>
             <button class="button" onclick="window.location.href='/add_song_page'">노래 업로드</button>
         </div>
     </section>
@@ -186,7 +221,9 @@
                 <div class="content">
                     <span>{{music_data['nick']}}</span> // <span>{{music_data['comment']}}</span>
                 </div>
-                    <i class="fa-solid fa-heart {% if music_data['_id'] in user_info['reco_music'] %} heart {% endif %}" onclick="click_heart('{{music_data['_id']}}')" id="recommend_icon{{music_data['_id']}}"><span id="recommend_count{{music_data['_id']}}">{{music_data['reco']}}</span></i>
+                    <span class="like_count" id="recommend_count{{music_data['_id']}}">{{music_data['reco']}}</span>
+                    <i class="fa-solid fa-heart {% if music_data['_id'] in user_info['reco_music'] %} heart {% endif %}"
+                       onclick="click_heart('{{music_data['_id']}}')" id="recommend_icon{{music_data['_id']}}"> </i>
             </div>
         </div>
         {% endfor %}

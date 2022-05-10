@@ -25,10 +25,17 @@
         #music-info > p {font-weight:bold;}
         #help-album {width:300px; height:300px; border:20px #8e44ad double;}
 
+        .button_logout {width:180px; height:50px; background-color:#fff; color:#8e44ad;
+                     position:absolute; left:160px; top:100px;}
+
 
     </style>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+    <!-- 제이쿼리 쿠키 삭제 cdn-->
+
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
 
 <script>
@@ -128,11 +135,19 @@
         });
 
     }
+
+    function logout() {
+            $.removeCookie('mytoken',{path: '/'});
+            alert('로그아웃!')
+            window.location.href = '/login'
+        }
+
 </script>
 
 
 
     <section class="section">
+    <button class="button button_logout" onclick="logout()">로그아웃</button>
 
         <div id="gini_modal">
             <img src="../static/hidden_song_modal_img.jpg" id="gini_modal_img" alt="">

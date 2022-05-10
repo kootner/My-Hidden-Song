@@ -34,16 +34,6 @@ def add_song_page():
         return redirect(url_for("home"))
 
 
-@app.route('/music_list')
-def music_list():
-    token_receive = request.cookies.get('mytoken')
-    try:
-        payload = jwt.decode(token_receive, TOKEN_KEY, algorithms=['HS256'])
-        return render_template('music_list.html')
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
-
-
 # Add Song Branch Start
 
 
@@ -89,7 +79,7 @@ def add_song():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, TOKEN_KEY, algorithms=['HS256'])
-        user_info={"nick": "test"}
+        user_info = db.users.find_one({"id": payload["id"]})
         album = request.args.get("album")
         music = request.args.get("music")
         artist = request.args.get("artist")
@@ -192,12 +182,15 @@ def sign_up():
 @app.route('/music_list', methods=['GET'])
 def music_data():
     token = request.cookies.get('mytoken')
+
     try:
         if token is not None:
             payload = jwt.decode(token, TOKEN_KEY, algorithms=['HS256'])
             user_info = db.users.find_one({"id": payload["id"]}, {"_id": False})
             if user_info is None:
                 return render_template('index.html', msg='로그인 정보가 없습니다.')
+        else:
+            return render_template('index.html')
         music_data_temp = list(db.musics.find().sort('reco', -1))
         music_data = []
         for document in music_data_temp:
@@ -267,6 +260,12 @@ def getYoutubeUrl():
     return jsonify({'result': 'success', 'youtubeUrl': youtubeUrl})
 
 # Youtube Branch End
+
+@app.route('/login')
+def login():
+    msg = request.args.get("msg")
+
+    return render_template('index.html', msg=msg)
 
 
 if __name__ == '__main__':
