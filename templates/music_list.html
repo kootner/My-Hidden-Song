@@ -24,9 +24,13 @@
     <!-- fontawesome -->
     <script src="https://kit.fontawesome.com/4fc2c0a9d6.js" crossorigin="anonymous"></script>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+
 
     <style>
-        *{font-family: 'Noto Sans KR', sans-serif;}
+        *{font-family: 'Noto Sans KR', sans-serif; color:#000;}
         .title {text-align:center; font-family: 'Courier Prime', monospace;
             font-size:80px; color:#fff; -webkit-text-stroke: 1px #000;}
         .is-250x250 {width:350px; height:350px; background-color:#8c8c8c; margin-left:32px; margin-top:32px;}
@@ -41,14 +45,43 @@
 
         .button {width:180px; height:50px; background-color:#8e44ad; color:#fff;
                 position:absolute; right:180px; top:100px;}
-        .button:hover {color:#8e44ad; background-color:#fff; transition-duration:0.3s;}
 
-        i {font-size:30px; position:relative; float:right; color:#ff0000;}
+        i {font-size:30px; position:relative; float:right; color:#8e44ad;
+            bottom:20px; }
+
+        .media-content { border-bottom:4px double #000; padding-bottom:5px;
+        height:80px;}
 
         #music {font-size:24px;}
         #artist {font-size:20px;}
         #nickname {font-weight:bolder;}
     </style>
+
+    <script>
+
+        $(document).ready(function(){
+            $("i").mouseover(function() {
+            $(this).css({"color":"#ff0000","cursor":"pointer","transition-duration":"0.3s"});
+        });
+
+            $("i").mouseout(function() {
+            $(this).css({"color":"#8e44ad","transition-duration":"0.3s"});
+        });
+
+            $(".button").mouseover(function() {
+            $(this).css({"color":"#8e44ad","background-color":"#fff","transition-duration":"0.3s"});
+        });
+
+            $(".button").mouseout(function() {
+            $(this).css({"color":"#fff","background-color":"#8e44ad","transition-duration":"0.3s"});
+        });
+
+
+        });
+
+
+    </script>
+
 </head>
 <body>
 
@@ -80,7 +113,7 @@
       <span id="nickname">닉네임</span> // <span id="comment"> 코멘트 코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트
     코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트</span>
     </div>
-       <i class="fa-solid fa-heart"></i>
+       <i class="fa-solid fa-heart" id="recommend_icon"></i>
   </div>
 </div>
 
@@ -102,7 +135,7 @@
       <span id="nickname">닉네임</span> // <span id="comment"> 코멘트 코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트
     코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트</span>
     </div>
-       <i class="fa-solid fa-heart"></i>
+       <i class="fa-solid fa-heart" id="recommend_icon"></i>
   </div>
 </div>
 
@@ -124,7 +157,7 @@
       <span id="nickname">닉네임</span> // <span id="comment"> 코멘트 코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트
     코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트</span>
     </div>
-       <i class="fa-solid fa-heart"></i>
+       <i class="fa-solid fa-heart" id="recommend_icon"></i>
   </div>
 </div>
 
@@ -146,9 +179,11 @@
       <span id="nickname">닉네임</span> // <span id="comment"> 코멘트 코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트
     코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트코멘트</span>
     </div>
-       <i class="fa-solid fa-heart"></i>
+       <i class="fa-solid fa-heart" id="recommend_icon"></i>
   </div>
 </div>
+
+
 
 
 </body>
