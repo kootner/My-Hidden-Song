@@ -69,7 +69,7 @@
         #artist {font-size:20px;}
         #nickname {font-weight:bolder;}
         .heart {
-            color:#ff0000; cursor:pointer;
+            color:#ff0000!important; cursor:pointer;
         }
     </style>
 
@@ -173,10 +173,7 @@
                 data: {id : id, sum_reco : sum_reco},
                 success: function (response) {
                     if(response['result']=="success"){
-                        $("#recommend_icon"+id).toggleClass("heart")
-                        $("#recommend_count"+id).text(function(i, val){
-                            return parseInt(val) + sum_reco
-                        })
+                        window.location.href="/"
                     }
                 }
             })
