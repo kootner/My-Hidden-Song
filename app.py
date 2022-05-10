@@ -191,7 +191,6 @@ def getYoutubeUrl():
     if youtubeUrl_temp is None:
         return jsonify({'result': 'fail', 'msg': "노래 정보가 없습니다."})
     youtubeUrl_temp=youtubeUrl_temp["youtube_url"]
-    print(youtubeUrl_temp)
     # Youtube code 추출
     if "?v=" in youtubeUrl_temp:
         # https://www.youtube.com/watch?v=Hbj48Cw87BQ&ab_channel=dingofreestyle
@@ -202,8 +201,6 @@ def getYoutubeUrl():
     elif "/embed/" in youtubeUrl_temp:
         # https://www.youtube.com/embed/OsA3iPO2fEg?autoplay=1&mute=1
         youtubeUrl=youtubeUrl_temp.split('/embed/')[1].split("?")[0]
-
-    print(youtubeUrl)
 
     return jsonify({'result': 'success', 'youtubeUrl': youtubeUrl})
 
