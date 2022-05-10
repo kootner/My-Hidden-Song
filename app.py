@@ -16,15 +16,31 @@ db = client.MyHiddenSong
 
 @app.route('/sign_up')
 def sign_up_page():
-    return render_template('Sign_up_page.html')
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, TOKEN_KEY, algorithms=['HS256'])
+        return redirect(url_for("home"))
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return render_template('Sign_up_page.html')
 
 @app.route('/add_song_page')
 def add_song_page():
-    return render_template('add_song.html')
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, TOKEN_KEY, algorithms=['HS256'])
+        return render_template('add_song.html')
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
 @app.route('/music_list')
 def music_list():
-    return render_template('music_list.html')
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, TOKEN_KEY, algorithms=['HS256'])
+        return render_template('music_list.html')
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
+
 
 # Add Song Branch Start
 
@@ -68,36 +84,35 @@ def check_song():
 
 @app.route('/add_song', methods=['GET'])
 def add_song():
-    # token_receive = request.cookies.get('mytoken')
-    # try:
-    #     payload = jwt.decode(token_receive, TOKEN_KEY, algorithms=['HS256'])
-    #     user_info = db.users.find_one({"id": payload["id"]})
-    user_info={"nick": "test"}
-    album = request.args.get("album")
-    music = request.args.get("music")
-    artist = request.args.get("artist")
-    gini_url = request.args.get("gini_url")
-    youtube_url = request.args.get("youtube_url")
-    comment = request.args.get("comment")
-    # gini_url 로 중복 등록 확인
-    is_exist = db.musics.find_one({"gini_url": gini_url}, {"_id": False})
-    if is_exist is not None:
-        return jsonify({'result': 'fail', 'msg': '이미 등록된 음악입니다!'})
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, TOKEN_KEY, algorithms=['HS256'])
+        user_info={"nick": "test"}
+        album = request.args.get("album")
+        music = request.args.get("music")
+        artist = request.args.get("artist")
+        gini_url = request.args.get("gini_url")
+        youtube_url = request.args.get("youtube_url")
+        comment = request.args.get("comment")
+        # gini_url 로 중복 등록 확인
+        is_exist = db.musics.find_one({"gini_url": gini_url}, {"_id": False})
+        if is_exist is not None:
+            return jsonify({'result': 'fail', 'msg': '이미 등록된 음악입니다!'})
 
-    doc = {
-        "album": album,
-        "music": music,
-        "artist": artist,
-        "comment": comment,
-        "reco": 0,
-        "nick": user_info['nick'],
-        "youtube_url": youtube_url,
-        "gini_url": gini_url
-    }
-    db.musics.insert_one(doc)
-    return jsonify({'result': 'success'})
-    # except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-    #     return redirect(url_for("home"))
+        doc = {
+            "album": album,
+            "music": music,
+            "artist": artist,
+            "comment": comment,
+            "reco": 0,
+            "nick": user_info['nick'],
+            "youtube_url": youtube_url,
+            "gini_url": gini_url
+        }
+        db.musics.insert_one(doc)
+        return jsonify({'result': 'success'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
 
 # Add Song Branch End
