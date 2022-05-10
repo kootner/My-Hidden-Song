@@ -47,8 +47,11 @@
         .button {width:180px; height:50px; background-color:#8e44ad; color:#fff;
                 position:absolute; right:180px; top:100px;}
 
-        i {font-size:30px; position:relative; float:right; color:#8e44ad;
-            bottom:20px; }
+        i {font-size:30px; position:absolute; float:right; color:#8e44ad;
+            bottom:32px; right:32px; }
+
+        #like_count {font-size:18px; position:absolute; font-weight:bold;
+                        bottom:35px; right:70px; -webkit-text-stroke: 1px #000;}
 
         .media-content { border-bottom:4px double #000; padding-bottom:5px;
         height:80px;}
@@ -109,8 +112,9 @@
                                                     <div class="content">
                                                         <span>${nick}</span> // <span>${comment}</span>
                                                     </div>
-                                                        <i class="fa-solid fa-heart" id="recommend_icon"></i>
+
                                                 </div>
+                                                        <span id="like_count">3</span><i class="fa-solid fa-heart" id="recommend_icon"></i>
                                             </div>`
                             $('#card-box').append(temp_html)
                         }
