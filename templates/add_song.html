@@ -1,9 +1,51 @@
-{% extends "layout.html" %}
+{% extends "header.html" %}
 {% block content %}
+    <style>
+        *{font-family: 'Noto Sans KR', sans-serif;}
+        .title {text-align:center; font-family: 'Courier Prime', monospace;
+            font-size:80px; color:#fff; -webkit-text-stroke: 1px #000;}
+        .is-sparta {background-color:#8e44ad; color:#fff; font-weight:500;}
+        h1 { font-size:54px; text-align:center; margin-bottom:20px; }
+        .container{background-color:#e0e0e0; height:550px; position:relative;}
+        .box {background-color:#e0e0e0; box-shadow:none;}
+        .input {font-weight:bold;}
+        .button:hover{color:#8e44ad; background-color:#fff; transition-duration:0.3s;}
+
+        #gini_modal {background-color:rgba(0,0,0,0.5); position:fixed; z-index:99; width:100%; height:100%;
+                    left:0; top:0; display:none;}
+        #gini_modal_img {margin:0 auto; width:600px; height:600px; position:absolute;
+                        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);}
+
+
+        #music-info {width:400px; height:350px;
+            display:none; box-sizing:border-box; position:relative;
+            float:right; top:-370px; right:50px;
+            text-align:center; }
+        #music-info > p {font-weight:bold;}
+        #help-album {width:300px; height:300px; border:20px #8e44ad double;}
+
+
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
 <script>
-    function how_to_gini() {
-        
-    }
+
+    $().ready(function () {
+
+
+        $("#how_to_gini").click(function () {
+            $("#gini_modal").show();
+        })
+        $("#gini_modal").click(function () {
+            $("#gini_modal").hide();
+        })
+
+
+    })
+
+
     function add_song() {
         let album = $("#help-album").attr("src")
         let music = $("#help-music").text()
@@ -87,9 +129,21 @@
     }
 </script>
 
+
+
     <section class="section">
 
+        <div id="gini_modal">
+            <img src="https://www.rugbyafrique.com/wp-content/uploads/2020/09/600x600-1.jpg" id="gini_modal_img" alt="">
+        </div>
+
+
+
+
+
         <div class="container">
+
+
 
             <div class="box" style="max-width: 480px;margin:auto">
                 <h1>노래 추가하기</h1>
@@ -105,12 +159,21 @@
 
                                     <span class="icon is-small is-left"><i class="fa fa-link"></i></span>
                                 </div>
+
+
+
+
                                 <div id="btn-check-dup" class="control">
-                                    <button class="button is-sparta" onclick="how_to_gini()"><i class="fa fa-question-circle mr-1"></i>지니 URL 넣는 방법</button>
+
+
+                                    <button class="button is-sparta" id="how_to_gini">
+                                        <i class="fa fa-question-circle mr-1"></i>지니 URL 넣는 방법</button>
                                 </div>
 
                             </div>
                             <p id="help-loading" class="help"></p>
+
+                            <!--
                             <div class="field" id="music-info" style="display: none;">
                                 <div class="columns">
                                     <div class="column is-one-third">
@@ -123,6 +186,8 @@
                                     </div>
                                 </div>
                             </div>
+                            --!>
+
                             <div class="field">
                                 <nav class="level is-mobile">
                                     <button class="level-item button is-sparta" onclick="check_song()">
@@ -138,7 +203,7 @@
                             </div>
                             <div class="field">
                                 <div class="control has-icons-left">
-                                    <input id="input-comment" class="textarea" type="textarea" placeholder="코멘트">
+                                    <textarea id="input-comment" class="textarea" maxlength="100" placeholder="코멘트"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -158,6 +223,13 @@
 
                     </div>
                 </article>
+            </div>
+
+            <div id="music-info">
+                <img id="help-album">
+                <p id="help-music"></p>
+                <p id="help-artist"></p>
+                <p id="help-gini_url" style="display: none;"></p>
             </div>
 
         </div>
