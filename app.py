@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 from flask import Flask, request, jsonify, render_template, redirect,url_for
 import hashlib
 import jwt
@@ -22,9 +23,6 @@ def sign_up_page():
 def add_song_page():
     return render_template('add_song.html')
 
-@app.route('/music_list')
-def music_list():
-    return render_template('music_list.html')
 
 # Add Song Branch Start
 
@@ -113,7 +111,7 @@ def home():
             if user_info is None:
                 return render_template('index.html', msg='로그인 정보가 없습니다.')
 
-            return render_template('music_list.html', user_info=user_info)
+            return redirect(url_for('music_data'))
         else:
             return render_template('index.html')
     except jwt.ExpiredSignatureError:
@@ -172,10 +170,59 @@ def sign_up():
 
 
 
-@app.route('/music_list/data', methods=['GET'])
+@app.route('/music_list', methods=['GET'])
 def music_data():
-    music_data = list(db.musics.find({}, {'_id': False}))
-    return jsonify({'all_music': music_data})
+    token = request.cookies.get('mytoken')
+    try:
+        if token is not None:
+            payload = jwt.decode(token, TOKEN_KEY, algorithms=['HS256'])
+            user_info = db.users.find_one({"id": payload["id"]}, {"_id": False})
+            if user_info is None:
+                return render_template('index.html', msg='로그인 정보가 없습니다.')
+        music_data_temp = list(db.musics.find().sort('reco', -1))
+        music_data = []
+        for document in music_data_temp:
+            document['_id'] = str(document['_id'])
+            music_data.append(document)
+        print(music_data)
+        return render_template('music_list.html', music_datas = music_data, user_info = user_info)
+    except jwt.ExpiredSignatureError:
+        print("로그인 시간 만료")
+        return render_template('index.html')
+    except jwt.exceptions.DecodeError:
+        print("로그인 정보가 없습니다")
+        return render_template('index.html')
+
+@app.route('/heart', methods=['POST'])
+def heart():
+    token = request.cookies.get('mytoken')
+    try:
+        if token is not None:
+            payload = jwt.decode(token, TOKEN_KEY, algorithms=['HS256'])
+            user_info = db.users.find_one({"id": payload["id"]}, {"_id": False})
+            if user_info is None:
+                return render_template('index.html', msg='로그인 정보가 없습니다.')
+
+        music_id = request.form['id']
+        sum_reco = int(request.form['sum_reco'])
+        if sum_reco > 0:
+            # 추천함
+            db.users.update_one({"id" : user_info['id']}, {"$push": {"reco_music": music_id}}, upsert = True)
+        else:
+            # 추천 취소함
+            db.users.update_one({"id" : user_info['id']}, {"$pull": {"reco_music": music_id}})
+
+        db.musics.update_one(
+            {"_id": ObjectId(music_id)},
+            {"$inc": {"reco": sum_reco}}
+        )
+        return jsonify({'result': "success"})
+    except jwt.ExpiredSignatureError:
+        print("로그인 시간 만료")
+        return render_template('index.html')
+    except jwt.exceptions.DecodeError:
+        print("로그인 정보가 없습니다")
+        return render_template('index.html')
 
 # Youtube Branch Start
 
