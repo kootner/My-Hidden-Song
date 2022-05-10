@@ -56,24 +56,33 @@
         #music {font-size:24px;}
         #artist {font-size:20px;}
         #nickname {font-weight:bolder;}
+        .heart {
+            color:#ff0000; cursor:pointer;
+        }
     </style>
 
     <script>
-
         $(document).ready(function(){
 
-            showMusic();
+            {#showMusic();#}
+            $("i").mouseover(function() {
+                if(!$(this).hasClass("heart")){
+                    $(this).css({"color":"#ff0000","cursor":"pointer","transition-duration":"0.3s"});
+                }
+            });
 
-
-
-
+            $("i").mouseout(function() {
+                if(!$(this).hasClass("heart")){
+                $(this).css({"color":"#8e44ad","transition-duration":"0.3s"});
+                }
+            });
             $(".button").mouseover(function() {
-            $(this).css({"color":"#8e44ad","background-color":"#fff","transition-duration":"0.3s"});
-        });
+                $(this).css({"color":"#8e44ad","background-color":"#fff","transition-duration":"0.3s"});
+            });
 
             $(".button").mouseout(function() {
-            $(this).css({"color":"#fff","background-color":"#8e44ad","transition-duration":"0.3s"});
-        });
+                $(this).css({"color":"#fff","background-color":"#8e44ad","transition-duration":"0.3s"});
+            });
 
 
         });
@@ -85,14 +94,19 @@
                     data: {},
                     success: function (response) {
                         let music_data = response['all_music']
-                        console.log(music_data);
+                        let user_info = response['user_info']
+                        console.log(user_info)
                         for (let i = 0; i < music_data.length; i++) {
                             let album = music_data[i]['album']
                             let music = music_data[i]['music']
                             let artist = music_data[i]['artist']
                             let comment = music_data[i]['comment']
                             let nick = music_data[i]['nick']
-
+                            let id = music_data[i]['_id']
+                            let is_heart = ""
+                            if (user_info['reco_music'] != null && user_info['reco_music'].includes(id) ){
+                                is_heart = "heart"
+                            }
                             let temp_html = `<div class="card">
                                                 <div class="card-image">
                                                     <figure class="image is-250x250">
@@ -109,23 +123,38 @@
                                                     <div class="content">
                                                         <span>${nick}</span> // <span>${comment}</span>
                                                     </div>
-                                                        <i class="fa-solid fa-heart" id="recommend_icon"></i>
+                                                        <i class="fa-solid fa-heart ${is_heart}" onclick="click_heart(${id})" id="recommend_icon${id}"></i>
                                                 </div>
                                             </div>`
                             $('#card-box').append(temp_html)
                         }
                     },
                     complete: function (response) {
-                        $("i").mouseover(function() {
-                            $(this).css({"color":"#ff0000","cursor":"pointer","transition-duration":"0.3s"});
-                        });
-
-                        $("i").mouseout(function() {
-                            $(this).css({"color":"#8e44ad","transition-duration":"0.3s"});
-                        });
                     }
                 })
             }
+        function click_heart(id){
+            console.log(id)
+            let sum_reco = 0
+            if($("#recommend_icon"+id).hasClass("heart")){
+                sum_reco--
+            }else{
+                sum_reco++
+            }
+            $.ajax({
+                type: "POST",
+                url: "/heart",
+                data: {id : id, sum_reco : sum_reco},
+                success: function (response) {
+                    if(response['result']=="success"){
+                        $("#recommend_icon"+id).toggleClass("heart")
+                        $("#recommend_count"+id).text(function(i, val){
+                            return parseInt(val) + sum_reco
+                        })
+                    }
+                }
+            })
+        }
     </script>
 
 </head>
@@ -140,6 +169,27 @@
     </section>
 
     <div id="card-box">
+        {% for music_data in music_datas %}
+        <div class="card">
+            <div class="card-image">
+                <figure class="image is-250x250">
+                    <img src="{{music_data['album']}}" alt="Placeholder image">
+                </figure>
+            </div>
+            <div class="card-content">
+                <div class="media">
+                    <div class="media-content">
+                        <p>{{music_data['music']}}</p>
+                        <p>{{music_data['artist']}}</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <span>{{music_data['nick']}}</span> // <span>{{music_data['comment']}}</span>
+                </div>
+                    <i class="fa-solid fa-heart {% if music_data['_id'] in user_info['reco_music'] %} heart {% endif %}" onclick="click_heart('{{music_data['_id']}}')" id="recommend_icon{{music_data['_id']}}"><span id="recommend_count{{music_data['_id']}}">{{music_data['reco']}}</span></i>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 
 
