@@ -14,7 +14,6 @@ TOKEN_KEY = 'SPARTA'
 client = MongoClient('13.125.152.229', 27017, username="test", password="test")
 db = client.MyHiddenSong
 
-
 @app.route('/sign_up')
 def sign_up_page():
     token_receive = request.cookies.get('mytoken')
