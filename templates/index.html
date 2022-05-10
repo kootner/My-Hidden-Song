@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <!-- Webpage Title -->
-        <title>Log In</title>
+        <title>My-Hidden-Song</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
         <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
         <meta property="og:title" content="스위터 - 세상을 달달하게"/>
@@ -25,8 +25,20 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
-        <style>
+        <!-- google font -->
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
 
+        <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&display=swap" rel="stylesheet">
+
+        <style>
+        *{font-family: 'Noto Sans KR', sans-serif;}
+        .title {text-align:center; font-family: 'Courier Prime', monospace;
+            font-size:80px; color:#fff; -webkit-text-stroke: 1px #000;}
+        .box {background-color:#e0e0e0; margin-left:50px;}
+        .content {margin-top:19%;}
+        .input {font-weight:bold;}
+        .is-sparta {background-color:#8e44ad; color:#fff; font-weight:500;}
+        .button:hover{color:#8e44ad; background-color:#fff; transition-duration:0.3s;}
         </style>
 
         <script>
@@ -91,8 +103,20 @@
 
         </script>
 
+
+
 </head>
 <body>
+
+<section class="hero">
+  <div class="hero-body">
+    <p class="title">
+      My-Hidden-Song
+    </p>
+  </div>
+</section>
+
+
         <section class="section">
             <div class="container">
                 <div class="columns">
@@ -123,7 +147,7 @@
                                         </button>
                                     </nav>
                                     <hr>
-                                    <h4 class="mb-3">아직 회원이 아니라면</h4>
+                                    <h4 class="mb-3"><b>아직 회원이 아니라면</b></h4>
                                     <nav class="level is-mobile">
                                         <button class="level-item button is-sparta is-outlined"
                                                 onclick="window.location.href='/sign_up'">
