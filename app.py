@@ -1,5 +1,6 @@
 from pymongo import MongoClient
-from flask import Flask, render_template, request,jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
+import jwt
 
 import hashlib
 import requests
@@ -7,39 +8,79 @@ from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
+TOKEN_KEY = 'SPARTA'
 
 client = MongoClient('13.125.152.229', 27017, username="test", password="test")
 db = client.MyHiddenSong
 
 
-
 # Add Song Branch Start
+
 
 @app.route('/add_song_page')
 def add_song_page():
     return render_template('add_song.html')
 
-
-@app.route('/add_song', methods=['GET'])
-def add_song():
-
+@app.route('/check_song', methods=['GET'])
+def check_song():
     # gini_url = request.args.get("gini_url")
-    gini_url = "https://www.genie.co.kr/detail/songInfo?xgnm=92366473"
-    # youtube_url = request.args.get("youtube_url")
-    # comment = request.args.get("comment")
-
+    gini_url = "https://www.genie.co.kr/detail/songInfo?xgnm=96664100"
+    youtube_url = request.args.get("youtube_url")
+    # gini_url 로 중복 등록 확인
+    is_exist = db.musics.find_one({"gini_url": gini_url}, {"_id": False})
+    if is_exist is not None :
+        return jsonify({'result': 'fail', 'msg': '이미 등록된 음악입니다!'})
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
     data = requests.get(gini_url, headers=headers)
     soup = BeautifulSoup(data.text, 'html.parser')
 
-    album = soup.select('#body-content > div.song-main-infos > div.photo-zone > a > span.cover > img')[0]['src'].strip()
+    album = "https:"+soup.select('#body-content > div.song-main-infos > div.photo-zone > a > span.cover > img')[0]['src'].strip()
 
     music = soup.select('#body-content > div.song-main-infos > div.info-zone > h2')[0].text.strip()
 
     artist = soup.select('#body-content > div.song-main-infos > div.info-zone > ul > li:nth-child(1) > span.value > a')[0].text.strip()
-    print(album, music, artist)
-    return render_template('music_list.html')
+    doc = {
+        "result": "success",
+        "album": album,
+        "music": music,
+        "artist": artist,
+        "youtube_url": youtube_url
+    }
+    db.musics.insert_one(doc)
+    return jsonify(doc)
+
+@app.route('/add_song', methods=['GET'])
+def add_song():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, TOKEN_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"id": payload["id"]})
+
+        album = request.args.get("album")
+        music = request.args.get("music")
+        artist = request.args.get("artist")
+        gini_url = request.args.get("gini_url")
+        youtube_url = request.args.get("youtube_url")
+        comment = request.args.get("comment")
+        # gini_url 로 중복 등록 확인
+        is_exist = db.musics.find_one({"gini_url": gini_url}, {"_id": False})
+        if is_exist is not None :
+            return jsonify({'result': 'fail', 'msg': '이미 등록된 음악입니다!'})
+
+        doc = {
+            "album": album,
+            "music": music,
+            "artist": artist,
+            "comment": comment,
+            "reco": 0,
+            "nick": user_info['nick'],
+            "youtube_url": youtube_url,
+        }
+        db.musics.insert_one(doc)
+        return jsonify({'result': 'success'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
 # Add Song Branch End
 

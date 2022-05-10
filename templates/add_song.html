@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block content %}
+<script>
+    function how_to_gini() {
+        
+    }
+</script>
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="box" style="max-width: 480px;margin:auto">
+                <h1>회원가입</h1>
+                <article class="media">
+
+                    <div class="media-content">
+                        <div class="content">
+                            <div class="field has-addons">
+
+                                <div class="control has-icons-left" style="width:100%">
+
+                                    <input id="input-gini_url" class="input" type="text" placeholder="지니 URL">
+
+                                    <span class="icon is-small is-left"><i class="fa fa-link"></i></span>
+                                </div>
+                                <div id="btn-check-dup" class="control">
+                                    <button class="button is-sparta" onclick="how_to_gini()"><i class="fa fa-question-circle mr-1"></i>지니 URL 넣는 방법</button>
+                                </div>
+
+                            </div>
+                            <div class="field">
+                                <nav class="level is-mobile">
+                                    <button class="level-item button is-sparta" onclick="sign_up()">
+                                        노래 불러오기
+                                    </button>
+                                </nav>
+                            </div>
+                            <div class="field">
+                                <div class="control has-icons-left">
+                                    <input id="input-youtube_url" class="input" type="text" placeholder="유튜브 URL">
+                                    <span class="icon is-small is-left"><i class="fa fa-link"></i></span>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control has-icons-left">
+                                    <input id="input-comment" class="textarea" type="textarea" placeholder="코멘트">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div id="sign-up-box">
+                            <nav class="level is-mobile">
+                                <button class="level-item button is-sparta" onclick="sign_up()">
+                                    노래 추가
+                                </button>
+                                <button class="level-item button is-sparta is-outlined" onclick="toggle_sign_up()">
+                                    취소
+                                </button>
+                            </nav>
+                        </div>
+
+
+                    </div>
+                </article>
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}
