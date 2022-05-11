@@ -182,7 +182,6 @@
 
         $(document).ready(function () {
 
-            {#showMusic();#}
             $("i").mouseover(function () {
                 if (!$(this).hasClass("heart")) {
                     $(this).css({"color": "#ff0000", "cursor": "pointer", "transition-duration": "0.3s"});
@@ -225,54 +224,6 @@
 
         });
 
-
-        function showMusic() {
-            $.ajax({
-                type: "GET",
-                url: "/music_list/data",
-                data: {},
-                success: function (response) {
-                    let music_data = response['all_music']
-                    let user_info = response['user_info']
-                    console.log(user_info)
-                    for (let i = 0; i < music_data.length; i++) {
-                        let album = music_data[i]['album']
-                        let music = music_data[i]['music']
-                        let artist = music_data[i]['artist']
-                        let comment = music_data[i]['comment']
-                        let nick = music_data[i]['nick']
-                        let id = music_data[i]['_id']
-                        let is_heart = ""
-                        if (user_info['reco_music'] != null && user_info['reco_music'].includes(id)) {
-                            is_heart = "heart"
-                        }
-                        let temp_html = `<div class="card">
-                                                    <div class="card-image">
-                                                    <figure class="image is-250x250">
-                                                        <img src="${album}" alt="Placeholder image">
-                                                    </figure>
-                                                </div>
-                                                <div class="card-content">
-                                                    <div class="media">
-                                                        <div class="media-content">
-                                                            <p>${music}</p>
-                                                            <p>${artist}</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="content">
-                                                        <span>${nick}</span> // <span>${comment}</span>
-                                                    </div>
-                                                        <i class="fa-solid fa-heart ${is_heart}" onclick="click_heart(${id})" id="recommend_icon${id}"></i>
-
-                                                </div>
-                                            </div>`
-                        $('#card-box').append(temp_html)
-                    }
-                },
-                complete: function (response) {
-                }
-            })
-        }
 
         function click_heart(id) {
             console.log(id)
