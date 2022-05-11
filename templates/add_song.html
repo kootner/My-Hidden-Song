@@ -22,8 +22,11 @@
             display:none; box-sizing:border-box; position:relative;
             float:right; top:-370px; right:50px;
             text-align:center; }
+        #search-info {width:400px; height:350px;
+            display:none; box-sizing:border-box; position:relative;
+            float:left; top:-370px; left:50px;}
         #music-info > p {font-weight:bold;}
-        #help-album {width:300px; height:300px; border:20px #8e44ad double;}
+        #help-album {width:300px; height:300px; border:20px #8e44ad double;border-radius: 10px;}
 
         .button_logout {width:180px; height:50px; background-color:#fff; color:#8e44ad;
                      position:absolute; left:160px; top:100px;}
@@ -52,7 +55,6 @@
 
 
     })
-
 
     function add_song() {
         let album = $("#help-album").attr("src")
@@ -95,6 +97,10 @@
             }
         });
 
+    }
+    function check_song_by_click(id){
+        $("#input-gini_url").val("https://www.genie.co.kr/detail/songInfo?xgnm="+id)
+        check_song()
     }
     function check_song() {
         let gini_url = $("#input-gini_url").val()
@@ -140,8 +146,55 @@
             $.removeCookie('mytoken',{path: '/'});
             alert('로그아웃!')
             window.location.href = '/login'
-        }
+    }
 
+    let debounce = null;
+    function keyUp(t) {
+    $("#search-info").html(`
+    wait..
+    `)
+      clearTimeout(debounce)
+      debounce = setTimeout(() => {
+          console.log(t.value)
+          $.ajax({
+            type: "GET",
+            url: "/search",
+            data: {
+                search_text: t.value
+            },
+            success: function (response) {
+                console.log(response['song'])
+                let songs=response['song']
+                $("#search-info").empty()
+                if(songs==undefined){
+                    $("#search-info").hide()
+                }else{
+                    $("#search-info").show()
+                    for (let i = 0; i < songs.length; i++) {
+                        let song = songs[i]
+                        $("#search-info").append(`
+                            <div onclick="check_song_by_click(${song['id']})" style="">
+                                <img id="search-album" src="https://image.genie.co.kr${song['image']}" style=" float:left;">
+                                    <div style="background: #cea2e0;color:white;width:82px;height:82px; float:left;width:300px;margin-bottom: 5px;vertical-align: middle; display: table-cell;line-height: 40px;padding-left: 10px;border-radius:0px 2px 2px 0;">
+                                        <span id="search-music" style="font-weight:bold;display: block;vertical-align: middle;">${song['field1']}</span>
+                                        <span id="search-artist" style="display: block;vertical-align: middle;font-weight:bold;">${song['word']}</span>
+                                    </div>
+
+                            </div>
+                        `)
+                    }
+                }
+
+            },
+            beforeSend: function (response) {
+            },
+            complete: function (response) {
+            },
+            error: function (response) {
+            }
+        });
+      }, 500)
+    }
 </script>
 
 
@@ -161,12 +214,20 @@
 
 
 
+
             <div class="box" style="max-width: 480px;margin:auto">
                 <h1>노래 추가하기</h1>
                 <article class="media">
 
                     <div class="media-content">
                         <div class="content">
+
+                            <div class="field">
+                                <div class="control has-icons-left">
+                                    <input id="input-search" class="input" type="text" placeholder="검색" onkeyup = "keyUp(this)">
+                                    <span class="icon is-small is-left"><i class="fa fa-search"></i></span>
+                                </div>
+                            </div>
                             <div class="field has-addons">
 
                                 <div class="control has-icons-left" style="width:100%">
@@ -248,6 +309,8 @@
                 <p id="help-gini_url" style="display: none;"></p>
             </div>
 
+            <div id="search-info">
+            </div>
         </div>
     </section>
 
