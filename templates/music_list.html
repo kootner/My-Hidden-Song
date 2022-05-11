@@ -46,6 +46,7 @@
             font-size: 80px;
             color: #fff;
             -webkit-text-stroke: 1px #000;
+            cursor: pointer;
         }
 
         .is-250x250 {
@@ -159,7 +160,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color:#cea2e0;
+            background-color: #cea2e0;
         }
 
         #click_youtube {
@@ -213,14 +214,13 @@
 
             $(".card-image").click(function () {
                 getYoutubeUrl($(this).attr("youtube_url")),
-                $("#youtube_modal").show();
+                    $("#youtube_modal").show();
             })
             $("#youtube_modal").click(function () {
                 $(this).hide(),
-                $("#click_youtube").removeAttr('src');
+                    $("#click_youtube").removeAttr('src');
 
             });
-
 
 
         });
@@ -305,7 +305,7 @@
             $.ajax({
                 type: "GET",
                 url: "/getYoutube",
-                data: {youtube_url : youtube_url},
+                data: {youtube_url: youtube_url},
                 success: function (response) {
                     if (response['result'] == 'success') {
                         $("#click_youtube").attr("src", "https://www.youtube.com/embed/" + response['youtubeUrl'])
@@ -322,7 +322,7 @@
 <body>
 <section class="hero">
     <div class="hero-body">
-        <p class="title">
+        <p class="title" onclick="window.location.href='/'">
             My-Hidden-Song
         </p>
         <button class="button button_logout" onclick="logout()">로그아웃</button>

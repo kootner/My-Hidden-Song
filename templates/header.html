@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>My-Hidden-Song</title>
-        <link rel="shortcut icon" href="../static/favicon.png" type="image/x-icon">
-        <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-        <meta property="og:title" content="My-Hidden-Song"/>
-        <meta property="og:description" content="나만의 숨겨진 노래를 올려주세요!"/>
-        <meta property="og:image" content="../static/favicon.png"/>
+    <link rel="shortcut icon" href="../static/favicon.png" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <meta property="og:title" content="My-Hidden-Song"/>
+    <meta property="og:description" content="나만의 숨겨진 노래를 올려주세요!"/>
+    <meta property="og:image" content="../static/favicon.png"/>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -27,19 +27,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&display=swap" rel="stylesheet">
 
     <style>
-        *{font-family: 'Noto Sans KR', sans-serif;}
-        .title {text-align:center; font-family: 'Courier Prime', monospace;
-            font-size:80px; color:#fff; -webkit-text-stroke: 1px #000;}
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .title {
+            text-align: center;
+            font-family: 'Courier Prime', monospace;
+            font-size: 80px;
+            color: #fff;
+            -webkit-text-stroke: 1px #000;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
 <section class="hero">
-  <div class="hero-body">
-    <p class="title">
-      My-Hidden-Song
-    </p>
-  </div>
+    <div class="hero-body">
+        <p class="title" onclick="window.location.href='/'">
+            My-Hidden-Song
+        </p>
+    </div>
 </section>
 {% block content %}
 {% endblock %}
