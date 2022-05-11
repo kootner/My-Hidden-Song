@@ -23,78 +23,182 @@
     <script src="https://kit.fontawesome.com/4fc2c0a9d6.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-     <!-- JS -->
+    <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-                crossorigin="anonymous"></script>
+            crossorigin="anonymous"></script>
 
     <!-- 제이쿼리 쿠키 삭제 cdn-->
 
     <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
 
-
-
     <style>
-        *{font-family: 'Noto Sans KR', sans-serif; color:#000;}
-        .title {text-align:center; font-family: 'Courier Prime', monospace;
-            font-size:80px; color:#fff; -webkit-text-stroke: 1px #000;}
-        .is-250x250 {width:350px; height:350px; background-color:#8c8c8c; margin-left:32px; margin-top:32px;}
-        .is-250x250 img {width:350px; height:350px;}
-
-        .card {background-color:#e0e0e0;
-            width:414px; height:664px; margin-left:160px; margin-bottom:100px;
-            box-sizing:border-box; float:left;}
-
-        .card-content {width:414px;
-            padding-left:32px; padding-right:32px; box-sizing:border-box;}
-
-        .button {width:180px; height:50px; background-color:#8e44ad; color:#fff;
-                position:absolute; right:180px; top:100px;}
-
-        .button_logout {width:180px; height:50px; background-color:#fff; color:#8e44ad;
-                     position:absolute; left:160px; top:100px;}
-
-        i {font-size:30px; position:absolute; float:right; color:#8e44ad;
-            bottom:32px; right:32px; }
-
-        .like_count {font-size:18px; position:absolute; font-weight:bold;
-                        bottom:35px; right:70px; -webkit-text-stroke: 1px #000;}
-
-        .media-content { border-bottom:4px double #000; padding-bottom:5px;
-        height:80px;}
-
-        #music {font-size:24px;}
-        #artist {font-size:20px;}
-        #nickname {font-weight:bolder;}
-        .heart {
-            color:#ff0000!important; cursor:pointer;
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #000;
         }
+
+        .title {
+            text-align: center;
+            font-family: 'Courier Prime', monospace;
+            font-size: 80px;
+            color: #fff;
+            -webkit-text-stroke: 1px #000;
+        }
+
+        .is-250x250 {
+            width: 350px;
+            height: 350px;
+            background-color: #8c8c8c;
+            margin-left: 32px;
+            margin-top: 32px;
+        }
+
+        .is-250x250 img {
+            width: 350px;
+            height: 350px;
+        }
+
+        .card {
+            background-color: #e0e0e0;
+            width: 414px;
+            height: 664px;
+            margin-left: 160px;
+            margin-bottom: 100px;
+            box-sizing: border-box;
+            float: left;
+        }
+
+        .card-content {
+            width: 414px;
+            padding-left: 32px;
+            padding-right: 32px;
+            box-sizing: border-box;
+        }
+
+        .button {
+            width: 180px;
+            height: 50px;
+            background-color: #8e44ad;
+            color: #fff;
+            position: absolute;
+            right: 180px;
+            top: 100px;
+        }
+
+        .button_logout {
+            width: 180px;
+            height: 50px;
+            background-color: #fff;
+            color: #8e44ad;
+            position: absolute;
+            left: 160px;
+            top: 100px;
+        }
+
+        i {
+            font-size: 30px;
+            position: absolute;
+            float: right;
+            color: #8e44ad;
+            bottom: 32px;
+            right: 32px;
+        }
+
+        .like_count {
+            font-size: 18px;
+            position: absolute;
+            font-weight: bold;
+            bottom: 35px;
+            right: 70px;
+            -webkit-text-stroke: 1px #000;
+        }
+
+        .media-content {
+            border-bottom: 4px double #000;
+            padding-bottom: 5px;
+            height: 80px;
+        }
+
+        #music {
+            font-size: 24px;
+        }
+
+        #artist {
+            font-size: 20px;
+        }
+
+        #nickname {
+            font-weight: bolder;
+        }
+
+        .heart {
+            color: #ff0000 !important;
+            cursor: pointer;
+        }
+
+        #youtube_modal {
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            z-index: 99;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            display: none;
+        }
+
+        #youtbe_box {
+            margin: 0 auto;
+            width: 802px;
+            height: 451px;
+            position: absolute;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color:#cea2e0;
+        }
+
+        #click_youtube {
+            margin: 0 auto;
+            width: 802px;
+            height: 451px;
+            position: absolute;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 10px solid #8e44ad;
+        }
+
+
     </style>
 
     <script>
 
-        $(document).ready(function(){
+        $(document).ready(function () {
 
             {#showMusic();#}
-            $("i").mouseover(function() {
-                if(!$(this).hasClass("heart")){
-                    $(this).css({"color":"#ff0000","cursor":"pointer","transition-duration":"0.3s"});
+            $("i").mouseover(function () {
+                if (!$(this).hasClass("heart")) {
+                    $(this).css({"color": "#ff0000", "cursor": "pointer", "transition-duration": "0.3s"});
                 }
             });
 
-            $("i").mouseout(function() {
-                if(!$(this).hasClass("heart")){
-                $(this).css({"color":"#8e44ad","transition-duration":"0.3s"});
+            $("i").mouseout(function () {
+                if (!$(this).hasClass("heart")) {
+                    $(this).css({"color": "#8e44ad", "transition-duration": "0.3s"});
                 }
             });
-            $(".button").mouseover(function() {
-                $(this).css({"color":"#8e44ad","background-color":"#fff","transition-duration":"0.3s"});
+            $(".button").mouseover(function () {
+                $(this).css({"color": "#8e44ad", "background-color": "#fff", "transition-duration": "0.3s"});
             });
 
-            $(".button").mouseout(function() {
-                $(this).css({"color":"#fff","background-color":"#8e44ad","transition-duration":"0.3s"});
+            $(".button").mouseout(function () {
+                $(this).css({"color": "#fff", "background-color": "#8e44ad", "transition-duration": "0.3s"});
             });
 
 
@@ -107,32 +211,42 @@
 
             });
 
+            $(".card-image").click(function () {
+                getYoutubeUrl($(this).attr("youtube_url")),
+                $("#youtube_modal").show();
+            })
+            $("#youtube_modal").click(function () {
+                $(this).hide(),
+                $("#click_youtube").removeAttr('src');
+
+            });
+
+
 
         });
 
 
-
-          function showMusic() {
-                $.ajax({
-                    type: "GET",
-                    url: "/music_list/data",
-                    data: {},
-                    success: function (response) {
-                        let music_data = response['all_music']
-                        let user_info = response['user_info']
-                        console.log(user_info)
-                        for (let i = 0; i < music_data.length; i++) {
-                            let album = music_data[i]['album']
-                            let music = music_data[i]['music']
-                            let artist = music_data[i]['artist']
-                            let comment = music_data[i]['comment']
-                            let nick = music_data[i]['nick']
-                            let id = music_data[i]['_id']
-                            let is_heart = ""
-                            if (user_info['reco_music'] != null && user_info['reco_music'].includes(id) ){
-                                is_heart = "heart"
-                            }
-                            let temp_html = `<div class="card">
+        function showMusic() {
+            $.ajax({
+                type: "GET",
+                url: "/music_list/data",
+                data: {},
+                success: function (response) {
+                    let music_data = response['all_music']
+                    let user_info = response['user_info']
+                    console.log(user_info)
+                    for (let i = 0; i < music_data.length; i++) {
+                        let album = music_data[i]['album']
+                        let music = music_data[i]['music']
+                        let artist = music_data[i]['artist']
+                        let comment = music_data[i]['comment']
+                        let nick = music_data[i]['nick']
+                        let id = music_data[i]['_id']
+                        let is_heart = ""
+                        if (user_info['reco_music'] != null && user_info['reco_music'].includes(id)) {
+                            is_heart = "heart"
+                        }
+                        let temp_html = `<div class="card">
                                                     <div class="card-image">
                                                     <figure class="image is-250x250">
                                                         <img src="${album}" alt="Placeholder image">
@@ -152,28 +266,29 @@
 
                                                 </div>
                                             </div>`
-                            $('#card-box').append(temp_html)
-                        }
-                    },
-                    complete: function (response) {
+                        $('#card-box').append(temp_html)
                     }
-                })
-            }
-        function click_heart(id){
+                },
+                complete: function (response) {
+                }
+            })
+        }
+
+        function click_heart(id) {
             console.log(id)
             let sum_reco = 0
-            if($("#recommend_icon"+id).hasClass("heart")){
+            if ($("#recommend_icon" + id).hasClass("heart")) {
                 sum_reco--
-            }else{
+            } else {
                 sum_reco++
             }
             $.ajax({
                 type: "POST",
                 url: "/heart",
-                data: {id : id, sum_reco : sum_reco},
+                data: {id: id, sum_reco: sum_reco},
                 success: function (response) {
-                    if(response['result']=="success"){
-                        window.location.href="/"
+                    if (response['result'] == "success") {
+                        window.location.href = "/"
                     }
                 }
             })
@@ -181,50 +296,74 @@
 
 
         function logout() {
-            $.removeCookie('mytoken',{path: '/'});
+            $.removeCookie('mytoken', {path: '/'});
             alert('로그아웃!')
             window.location.href = '/login'
+        }
+
+        function getYoutubeUrl(youtube_url) {
+            $.ajax({
+                type: "GET",
+                url: "/getYoutube",
+                data: {youtube_url : youtube_url},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        $("#click_youtube").attr("src", "https://www.youtube.com/embed/" + response['youtubeUrl'])
+                    } else {
+                        alert(response['msg']);
+                    }
+                }
+            });
         }
 
     </script>
 
 </head>
 <body>
-    <section class="hero">
-        <div class="hero-body">
-            <p class="title">
-                My-Hidden-Song
-            </p>
-            <button class="button button_logout" onclick="logout()">로그아웃</button>
-            <button class="button" onclick="window.location.href='/add_song_page'">노래 업로드</button>
-        </div>
-    </section>
+<section class="hero">
+    <div class="hero-body">
+        <p class="title">
+            My-Hidden-Song
+        </p>
+        <button class="button button_logout" onclick="logout()">로그아웃</button>
+        <button class="button" onclick="window.location.href='/add_song_page'">노래 업로드</button>
+    </div>
+</section>
 
-    <div id="card-box">
-        {% for music_data in music_datas %}
+
+<div id="youtube_modal">
+    <div id="youtbe_box">
+        <iframe width="560" height="315" src="" id="click_youtube"></iframe>
+
+    </div>
+</div>
+
+
+<div id="card-box">
+    {% for music_data in music_datas %}
         <div class="card">
-            <div class="card-image">
+            <div class="card-image" youtube_url="{{ music_data['youtube_url'] }}">
                 <figure class="image is-250x250">
-                    <img src="{{music_data['album']}}" alt="Placeholder image">
+                    <img src="{{ music_data['album'] }}" alt="Placeholder image" id="album_click">
                 </figure>
             </div>
             <div class="card-content">
                 <div class="media">
                     <div class="media-content">
-                        <p>{{music_data['music']}}</p>
-                        <p>{{music_data['artist']}}</p>
+                        <p>{{ music_data['music'] }}</p>
+                        <p>{{ music_data['artist'] }}</p>
                     </div>
                 </div>
                 <div class="content">
-                    <span>{{music_data['nick']}}</span> // <span>{{music_data['comment']}}</span>
+                    <span>{{ music_data['nick'] }}</span> // <span>{{ music_data['comment'] }}</span>
                 </div>
-                    <span class="like_count" id="recommend_count{{music_data['_id']}}">{{music_data['reco']}}</span>
-                    <i class="fa-solid fa-heart {% if music_data['_id'] in user_info['reco_music'] %} heart {% endif %}"
-                       onclick="click_heart('{{music_data['_id']}}')" id="recommend_icon{{music_data['_id']}}"> </i>
+                <span class="like_count" id="recommend_count{{ music_data['_id'] }}">{{ music_data['reco'] }}</span>
+                <i class="fa-solid fa-heart {% if music_data['_id'] in user_info['reco_music'] %} heart {% endif %}"
+                   onclick="click_heart('{{ music_data['_id'] }}')" id="recommend_icon{{ music_data['_id'] }}"> </i>
             </div>
         </div>
-        {% endfor %}
-    </div>
+    {% endfor %}
+</div>
 
 
 </body>

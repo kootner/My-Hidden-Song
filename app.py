@@ -260,6 +260,26 @@ def getYoutubeUrl():
 
 # Youtube Branch End
 
+@app.route('/getYoutube', methods=['GET'])
+def getYoutube():
+    youtubeUrl_temp = request.args.get("youtube_url")
+    if youtubeUrl_temp is None:
+        return jsonify({'result': 'fail', 'msg': "노래 정보가 없습니다."})
+    # Youtube code 추출
+    if "?v=" in youtubeUrl_temp:
+        # https://www.youtube.com/watch?v=Hbj48Cw87BQ&ab_channel=dingofreestyle
+        youtubeUrl=youtubeUrl_temp.split('?v=')[1].split("&")[0]
+    elif "youtu.be/" in youtubeUrl_temp:
+        # https://youtu.be/Hbj48Cw87BQ
+        youtubeUrl=youtubeUrl_temp.split('youtu.be/')[1].split("?")[0]
+    elif "/embed/" in youtubeUrl_temp:
+        # https://www.youtube.com/embed/OsA3iPO2fEg?autoplay=1&mute=1
+        youtubeUrl=youtubeUrl_temp.split('/embed/')[1].split("?")[0]
+
+    return jsonify({'result': 'success', 'youtubeUrl': youtubeUrl})
+
+
+
 @app.route('/login')
 def login():
     msg = request.args.get("msg")
