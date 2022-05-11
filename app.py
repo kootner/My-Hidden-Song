@@ -35,7 +35,7 @@ def home():
             return redirect(url_for('music_data'))
         else:
             # 쿠키에 저장 된 토큰이 없을 때 index 페이지로 랜더링
-            return render_template('index.html', msg='로그인 정보가 없습니다.')
+            return render_template('index.html')
     except jwt.ExpiredSignatureError:
         # 로그인 시간이 만료 되었을 때 jwt 에서 주는 에러 예외 처리, 홈으로 랜더링
         return render_template('index.html')
