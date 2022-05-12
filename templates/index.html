@@ -129,6 +129,13 @@
                 }
             });
         }
+       function enterkey() {
+            if (window.event.keyCode == 13) {
+
+                // 엔터키가 눌렸을 때 실행할 내용
+                sign_in();
+            }
+        }
 
 
     </script>
@@ -156,14 +163,14 @@
                         <div class="content">
                             <div class="field has-addons">
                                 <div class="control has-icons-left" style="width:100%">
-                                    <input id="input-id" class="input" type="text" placeholder="아이디">
+                                    <input id="input-id" class="input" type="text" placeholder="아이디" onkeyup="enterkey();">
                                     <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
                                 </div>
                             </div>
                             <p id="help-id-login" class="help is-danger"></p>
                             <div class="field">
                                 <div class="control has-icons-left">
-                                    <input id="input-pw" class="input" type="password" placeholder="비밀번호">
+                                    <input id="input-pw" class="input" type="password" placeholder="비밀번호" onkeyup="enterkey();">
                                     <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
                                 </div>
                                 <p id="help-pw-login" class="help is-danger"></p>

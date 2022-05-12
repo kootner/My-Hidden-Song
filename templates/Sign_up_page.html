@@ -78,6 +78,7 @@
     </style>
 
     <script>
+
         function is_name(asValue) {
             var regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{2,10}$/;
             return regExp.test(asValue);
@@ -98,13 +99,14 @@
             if (id == "") {
                 $("#help-id").text("아이디를 입력해주세요.").removeClass("is-safe").addClass("is-danger")
                 $("#input-id").focus()
-                return;
+                return false
             }
             if (!is_name(id)) {
                 $("#help-id").text("아이디의 형식을 확인해주세요. 영문과 숫자, 일부 특수문자(._-) 사용 가능. 2-10자 길이").removeClass("is-safe").addClass("is-danger")
                 $("#input-id").focus()
-                return;
+                return false
             }
+            let a =false
             $("#help-id").addClass("is-loading")
             $.ajax({
                 type: "POST",
@@ -112,17 +114,20 @@
                 data: {
                     id_give: id
                 },
+                async:false,
                 success: function (response) {
                     if (response["exists"]) {
                         $("#help-id").text("이미 존재하는 아이디입니다.").removeClass("is-safe").addClass("is-danger")
                         $("#input-id").focus()
+                        a=false
                     } else {
                         $("#help-id").text("사용할 수 있는 아이디입니다.").removeClass("is-danger").addClass("is-success")
+                        a=true
                     }
                     $("#help-id").removeClass("is-loading")
-
                 }
             });
+            return a
         }
 
         function check_dup_nick() {
@@ -138,6 +143,7 @@
                 $("#input-nick").focus()
                 return;
             }
+            let a =false
             $("#help-nick").addClass("is-loading")
             $.ajax({
                 type: "POST",
@@ -145,18 +151,20 @@
                 data: {
                     nick_give: nick
                 },
+                async:false,
                 success: function (response) {
-
                     if (response["exists"]) {
                         $("#help-nick").text("이미 존재하는 닉네임입니다.").removeClass("is-safe").addClass("is-danger")
                         $("#input-nick").focus()
+                        a=false
                     } else {
                         $("#help-nick").text("사용할 수 있는 닉네임입니다.").removeClass("is-danger").addClass("is-success")
+                        a=true
                     }
                     $("#help-nick").removeClass("is-loading")
-
                 }
             });
+            return a
         }
 
         function sign_up() {
@@ -165,7 +173,13 @@
             let pw2 = $("#input-pw2").val()
             let nick = $("#input-nick").val()
             console.log(id, pw, pw2, nick)
-
+            console.log(check_dup())
+            console.log(check_dup_nick())
+            if (!check_dup()) {
+                return;
+            } else if (!check_dup_nick()) {
+                return;
+            }
 
             if ($("#help-id").hasClass("is-danger")) {
                 alert("아이디를 다시 확인해주세요.")
@@ -218,8 +232,8 @@
                     window.location.replace("/")
                 }
             });
-
         }
+
     </script>
 
 
@@ -284,7 +298,7 @@
                             </div>
 
                         </div>
-                        <p id="help-nick" class="help"> 닉네임은 2-10자의 영문과 숫자와 일부 특수문자(._-)만 입력 가능합니다.</p>
+                        <p id="help-nick" class="help"> 닉네임은 2-10자의 영문과 숫자, 한글 그리고 일부 특수문자(._-)만 입력 가능합니다.</p>
                         <br>
 
                         <nav class="level is-mobile">
@@ -305,3 +319,4 @@
 </section>
 </body>
 </html>
+
