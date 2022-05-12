@@ -178,6 +178,24 @@
             border: 10px solid #8e44ad;
         }
 
+        .bg_change {
+            background-color: #e0e0e0;
+            animation: bg_change 1.5s 1;
+        }
+
+        @keyframes bg_change {
+            0% {
+                background-color: #e0e0e0;
+            }
+            50% {
+                background-color: #cea2e0;
+            }
+
+            100% {
+                background-color: #e0e0e0;
+            }
+        }
+
 
     </style>
 
@@ -282,9 +300,25 @@
                         if(index > temp_index) {
                             console.log(index,"after",temp_index)
                             $(".card:eq("+temp_index+")").before($(".card:eq("+index+")"))
+                            $(".card:eq("+temp_index+")").addClass("bg_change").delay(1500).queue(function(){ $(this).removeClass("bg_change").dequeue(); });
+
+                                var card_offset = $(".card:eq("+temp_index+")").offset().top;
+                                $('html,body').animate({
+                                        scrollTop: card_offset - 100
+                                    },
+                                    'slow');
                         } else if (index < temp_index) {
                             console.log(index,"before",temp_index)
                             $(".card:eq("+temp_index+")").after($(".card:eq("+index+")"))
+                            $(".card:eq("+temp_index+")").addClass("bg_change").delay(1500).queue(function(){ $(this).removeClass("bg_change").dequeue(); });
+
+                                var card_offset = $(".card:eq("+temp_index+")").offset().top;
+                                $('html,body').animate({
+                                        scrollTop: card_offset - 100
+                                    },
+                                    'slow');
+                        } else {
+                            $(".card:eq("+temp_index+")").addClass("bg_change").delay(1500).queue(function(){ $(this).removeClass("bg_change").dequeue(); });
                         }
                     }
                 },
