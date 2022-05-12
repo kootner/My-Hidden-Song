@@ -226,24 +226,68 @@
 
 
         });
-
-
+        function getLikeCountIndex(i){
+            return parseInt($(".like_count:eq("+i+")").text())
+        }
+        function getIndex(t){
+            console.log(parseInt($(".card").index(t)))
+        }
+        let is_processing=false
         function click_heart(id) {
-            console.log(id)
+            if(is_processing){
+                return
+            }
+            is_processing = true
             let sum_reco = 0
             if ($("#recommend_icon" + id).hasClass("heart")) {
                 sum_reco--
             } else {
                 sum_reco++
             }
+
             $.ajax({
                 type: "POST",
                 url: "/heart",
                 data: {id: id, sum_reco: sum_reco},
                 success: function (response) {
                     if (response['result'] == "success") {
-                        window.location.href = "/"
+                        {#window.location.href = "/"#}
+                        if(sum_reco>0){
+                            {#    추천함 #}
+                            $("#recommend_icon" + id).addClass("heart")
+                            $("#recommend_count" + id).text(parseInt($("#recommend_count" + id).text())+1)
+                        }else {
+                            $("#recommend_icon" + id).removeClass("heart")
+                            $("#recommend_count" + id).text(parseInt($("#recommend_count" + id).text())-1)
+                        }
+                        let index=parseInt($(".like_count").index($("#recommend_count" + id)))
+
+                        let temp_index = index
+                        while (temp_index > 0 && temp_index < $(".like_count").length){
+                            console.log("while")
+                            if(getLikeCountIndex(temp_index-1) < getLikeCountIndex(index)) {
+                                console.log(temp_index,index, "index-1")
+                                temp_index = temp_index-1
+                                continue
+                            }
+                            if (getLikeCountIndex(temp_index+1) > getLikeCountIndex(index)) {
+                                console.log(temp_index, "i+1")
+                                temp_index = temp_index+1
+                                continue
+                            }
+                            break
+                        }
+                        if(index > temp_index) {
+                            console.log(index,"after",temp_index)
+                            $(".card:eq("+temp_index+")").before($(".card:eq("+index+")"))
+                        } else if (index < temp_index) {
+                            console.log(index,"before",temp_index)
+                            $(".card:eq("+temp_index+")").after($(".card:eq("+index+")"))
+                        }
                     }
+                },
+                complete:  function (response) {
+                    is_processing = false
                 }
             })
         }
@@ -295,7 +339,7 @@
 
 <div id="card-box">
     {% for music_data in music_datas %}
-        <div class="card">
+        <div class="card" onclick="getIndex(this)">
             <div class="card-image" youtube_url="{{ music_data['youtube_url'] }}">
                 <figure class="image is-250x250">
                     <img src="{{ music_data['album'] }}" alt="Placeholder image" id="album_click">
