@@ -255,9 +255,11 @@
                         if(sum_reco>0){
                             {#    추천함 #}
                             $("#recommend_icon" + id).addClass("heart")
+                            $("#recommend_icon" + id).css("color","#ff0000")
                             $("#recommend_count" + id).text(parseInt($("#recommend_count" + id).text())+1)
                         }else {
                             $("#recommend_icon" + id).removeClass("heart")
+                            $("#recommend_icon" + id).css("color","#8e44ad")
                             $("#recommend_count" + id).text(parseInt($("#recommend_count" + id).text())-1)
                         }
                         let index=parseInt($(".like_count").index($("#recommend_count" + id)))
