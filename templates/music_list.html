@@ -319,6 +319,11 @@
                                     'slow');
                         } else {
                             $(".card:eq("+temp_index+")").addClass("bg_change").delay(1500).queue(function(){ $(this).removeClass("bg_change").dequeue(); });
+                                var card_offset = $(".card:eq("+temp_index+")").offset().top;
+                                    $('html,body').animate({
+                                            scrollTop: card_offset - 100
+                                        },
+                                        'slow');
                         }
                     }
                 },
