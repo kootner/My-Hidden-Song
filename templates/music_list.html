@@ -1,40 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>music list | My Hidden Song</title>
-    <link rel="shortcut icon" href="../static/favicon.png" type="image/x-icon">
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <meta property="og:title" content="My-Hidden-Song"/>
-    <meta property="og:description" content="나만의 숨겨진 노래를 올려주세요!"/>
-    <meta property="og:image" content="../static/MHS_og_img.png"/>
-    <!-- Required meta tags -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bulma CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-    <!-- Font Awesome CSS -->
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Stylish&display=swap" rel="stylesheet">
-
-    <!-- google font -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&display=swap" rel="stylesheet">
-    <!-- fontawesome -->
-    <script src="https://kit.fontawesome.com/4fc2c0a9d6.js" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-    <!-- JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-
-    <!-- 제이쿼리 쿠키 삭제 cdn-->
-
-    <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+{% extends "header.html" %}
+{% block content %}
 
 
     <style>
@@ -100,6 +65,21 @@
             position: absolute;
             left: 160px;
             top: 100px;
+        }
+
+        #button_top {
+            width: 80px;
+            height: 80px;
+            background-color: #8e44ad;
+            color: #fff;
+            position: fixed;
+            right: 50px;
+            bottom: 50px;
+            border-radius:80px;
+            border: none;
+            display:none;
+            z-index:999;
+            font-weight:bold;
         }
 
         i {
@@ -232,6 +212,16 @@
 
             });
 
+            $("#button_top").mouseover(function () {
+                $(this).css({"color": "#8e44ad", "background-color": "#fff", "border":"1px solid #8e44ad",
+                    "transition-duration": "0.3s"});
+            });
+
+            $("#button_top").mouseout(function () {
+                $(this).css({"color": "#fff", "background-color": "#8e44ad", "transition-duration": "0.3s"});
+            });
+
+
             $(".card-image").click(function () {
                 getYoutubeUrl($(this).attr("youtube_url")),
                     $("#youtube_modal").show();
@@ -241,6 +231,22 @@
                     $("#click_youtube").removeAttr('src');
 
             });
+
+            $(function () {
+                $(window).scroll(function () {
+                    if ($(this).scrollTop() > 250) {
+                        $('#button_top').fadeIn();
+                    } else {
+                        $('#button_top').fadeOut();
+                    }
+                });
+                $("#button_top").click(function () {
+                    $('html, body').animate({scrollTop: 0}, 400);
+                    return false;
+                });
+            });
+
+
 
 
         });
@@ -319,6 +325,11 @@
                                     'slow');
                         } else {
                             $(".card:eq("+temp_index+")").addClass("bg_change").delay(1500).queue(function(){ $(this).removeClass("bg_change").dequeue(); });
+                                var card_offset = $(".card:eq("+temp_index+")").offset().top;
+                                    $('html,body').animate({
+                                            scrollTop: card_offset - 100
+                                        },
+                                        'slow');
                         }
                     }
                 },
@@ -352,17 +363,10 @@
 
     </script>
 
-</head>
-<body>
-<section class="hero">
-    <div class="hero-body">
-        <p class="title" onclick="window.location.href='/'">
-            My-Hidden-Song
-        </p>
-        <button class="button button_logout" onclick="logout()">로그아웃</button>
+
+    <button class="button button_logout" onclick="logout()">로그아웃</button>
         <button class="button" onclick="window.location.href='/add_song_page'">노래 업로드</button>
-    </div>
-</section>
+     <button id="button_top">TOP</button>
 
 
 <div id="youtube_modal">
@@ -400,6 +404,4 @@
 </div>
 
 
-</body>
-</html>
-
+{% endblock %}
