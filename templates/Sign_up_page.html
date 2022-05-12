@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sign up | My Hidden Song</title>
+    <link rel="shortcut icon" href="../static/favicon.png" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <meta property="og:title" content="My-Hidden-Song"/>
+    <meta property="og:description" content="나만의 숨겨진 노래를 올려주세요!"/>
+    <meta property="og:image" content="../static/MHS_og_img.png"/>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Stylish&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&display=swap" rel="stylesheet">
+
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+
+    <style>
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .title {
+            text-align: center;
+            font-family: 'Courier Prime', monospace;
+            font-size: 80px;
+            color: #fff;
+            -webkit-text-stroke: 1px #000;
+            cursor: pointer;
+        }
+
+        .is-sparta {
+            background-color: #8e44ad;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        h1 {
+            font-size: 54px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            background-color: #e0e0e0;
+            height: 550px;
+        }
+
+        .box {
+            background-color: #e0e0e0;
+            box-shadow: none;
+        }
+
+        .input {
+            font-weight: bold;
+        }
+
+        .button:hover {
+            color: #8e44ad;
+            background-color: #fff;
+            transition-duration: 0.3s;
+        }
+    </style>
+
+    <script>
+
+        function is_name(asValue) {
+            var regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{2,10}$/;
+            return regExp.test(asValue);
+        }
+        function is_nickname(asValue) {
+            var regExp = /^(?=.*[a-zA-Zㄱ-ㅎ가-힣])[-a-zA-Zㄱ-ㅎ가-힣0-9_.]{2,10}$/;
+            return regExp.test(asValue);
+        }
+
+        function is_password(asValue) {
+            var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
+            return regExp.test(asValue);
+        }
+
+        function check_dup() {
+            let id = $("#input-id").val()
+            console.log(id)
+            if (id == "") {
+                $("#help-id").text("아이디를 입력해주세요.").removeClass("is-safe").addClass("is-danger")
+                $("#input-id").focus()
+                return false
+            }
+            if (!is_name(id)) {
+                $("#help-id").text("아이디의 형식을 확인해주세요. 영문과 숫자, 일부 특수문자(._-) 사용 가능. 2-10자 길이").removeClass("is-safe").addClass("is-danger")
+                $("#input-id").focus()
+                return false
+            }
+            let a =false
+            $("#help-id").addClass("is-loading")
+            $.ajax({
+                type: "POST",
+                url: "/sign_up/check_dup",
+                data: {
+                    id_give: id
+                },
+                async:false,
+                success: function (response) {
+                    if (response["exists"]) {
+                        $("#help-id").text("이미 존재하는 아이디입니다.").removeClass("is-safe").addClass("is-danger")
+                        $("#input-id").focus()
+                        a=false
+                    } else {
+                        $("#help-id").text("사용할 수 있는 아이디입니다.").removeClass("is-danger").addClass("is-success")
+                        a=true
+                    }
+                    $("#help-id").removeClass("is-loading")
+                }
+            });
+            return a
+        }
+
+        function check_dup_nick() {
+            let nick = $("#input-nick").val()
+            console.log(nick)
+            if (nick == "") {
+                $("#help-nick").text("닉네임을 입력해주세요.").removeClass("is-safe").addClass("is-danger")
+                $("#input-nick").focus()
+                return;
+            }
+            if (!is_nickname(nick)) {
+                $("#help-nick").text("닉네임에 형식을 확인해주세요. 영문과 숫자, 한글 그리고 일부 특수문자(._-) 사용 가능. 2-10자 길이").removeClass("is-safe").addClass("is-danger")
+                $("#input-nick").focus()
+                return;
+            }
+            let a =false
+            $("#help-nick").addClass("is-loading")
+            $.ajax({
+                type: "POST",
+                url: "/sign_up/check_dup_nick",
+                data: {
+                    nick_give: nick
+                },
+                async:false,
+                success: function (response) {
+                    if (response["exists"]) {
+                        $("#help-nick").text("이미 존재하는 닉네임입니다.").removeClass("is-safe").addClass("is-danger")
+                        $("#input-nick").focus()
+                        a=false
+                    } else {
+                        $("#help-nick").text("사용할 수 있는 닉네임입니다.").removeClass("is-danger").addClass("is-success")
+                        a=true
+                    }
+                    $("#help-nick").removeClass("is-loading")
+                }
+            });
+            return a
+        }
+
+        function sign_up() {
+            let id = $("#input-id").val()
+            let pw = $("#input-pw").val()
+            let pw2 = $("#input-pw2").val()
+            let nick = $("#input-nick").val()
+            console.log(id, pw, pw2, nick)
+            console.log(check_dup())
+            console.log(check_dup_nick())
+            if (!check_dup()) {
+                return;
+            } else if (!check_dup_nick()) {
+                return;
+            }
+
+            if ($("#help-id").hasClass("is-danger")) {
+                alert("아이디를 다시 확인해주세요.")
+                return;
+            } else if (!$("#help-id").hasClass("is-success")) {
+                alert("아이디 중복확인을 해주세요.")
+                return;
+            }
+
+            if ($("#help-nick").hasClass("is-danger")) {
+                alert("닉네임을 다시 확인해주세요.")
+                return;
+            } else if (!$("#help-nick").hasClass("is-success")) {
+                alert("닉네임 중복확인을 해주세요.")
+                return;
+            }
+
+            if (pw == "") {
+                $("#help-pw").text("비밀번호를 입력해주세요.").removeClass("is-safe").addClass("is-danger")
+                $("#input-pw").focus()
+                return;
+            } else if (!is_password(pw)) {
+                $("#help-pw").text("비밀번호의 형식을 확인해주세요. 영문과 숫자 필수 포함, 특수문자(!@#$%^&*) 사용가능 8-20자").removeClass("is-safe").addClass("is-danger")
+                $("#input-pw").focus()
+                return
+            } else {
+                $("#help-pw").text("사용할 수 있는 비밀번호입니다.").removeClass("is-danger").addClass("is-success")
+            }
+            if (pw2 == "") {
+                $("#help-pw2").text("비밀번호를 입력해주세요.").removeClass("is-safe").addClass("is-danger")
+                $("#input-pw2").focus()
+                return;
+            } else if (pw2 != pw) {
+                $("#help-pw2").text("비밀번호가 일치하지 않습니다.").removeClass("is-safe").addClass("is-danger")
+                $("#input-pw2").focus()
+                return;
+            } else {
+                $("#help-pw2").text("비밀번호가 일치합니다.").removeClass("is-danger").addClass("is-success")
+            }
+            $.ajax({
+                type: "POST",
+                url: "/sign_up/save",
+                data: {
+                    id_give: id,
+                    pw_give: pw,
+                    nick_give: nick
+                },
+                success: function (response) {
+                    alert("회원가입을 축하드립니다!")
+                    window.location.replace("/")
+                }
+            });
+        }
+
+    </script>
+
+
+</head>
+<body>
+<section class="hero">
+    <div class="hero-body">
+        <p class="title" onclick="window.location.href='/'">
+            My-Hidden-Song
+        </p>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+        <div class="box" style="max-width: 480px;margin:auto">
+            <h1>회원가입</h1>
+            <article class="media">
+                <div class="media-content">
+                    <div class="content">
+                        <div class="field has-addons">
+                            <div class="control has-icons-left" style="width:100%">
+                                <input id="input-id" class="input" type="text" placeholder="아이디">
+                                <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+                            </div>
+                            <div id="btn-check-dup" class="control">
+                                <button class="button is-sparta" onclick="check_dup()">중복확인</button>
+                            </div>
+                        </div>
+                        <p id="help-id" class="help">아이디는 2-10자의 영문과 숫자와 일부 특수문자(._-)만 입력 가능합니다.</p>
+                        <p id="help-id-login" class="help is-danger"></p>
+
+                        <div class="field">
+                            <div class="control has-icons-left">
+                                <input id="input-pw" class="input" type="password" placeholder="비밀번호">
+                                <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                            </div>
+                            <p id="help-pw" class="help">영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요. 특수문자(!@#$%^&*)도 사용
+                                가능합니다.</p>
+                        </div>
+                    </div>
+
+                    <div id="sign-up-box">
+                        <div class="mb-5">
+                            <div class="field">
+                                <div class="control has-icons-left" style="width:100%">
+                                    <input id="input-pw2" class="input" type="password"
+                                           placeholder="비밀번호 재입력">
+                                    <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                                </div>
+                                <p id="help-pw2" class="help">비밀번호를 다시 한 번 입력해주세요.</p>
+
+                            </div>
+                        </div>
+
+                        <div class="field has-addons">
+                            <div class="control has-icons-left" style="width:100%">
+                                <input id="input-nick" class="input" type="text" placeholder="닉네임">
+                                <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+                            </div>
+                            <div id="btn-check-dup" class="control">
+                                <button class="button is-sparta" onclick="check_dup_nick()">중복확인</button>
+                            </div>
+
+                        </div>
+                        <p id="help-nick" class="help"> 닉네임은 2-10자의 영문과 숫자, 한글 그리고 일부 특수문자(._-)만 입력 가능합니다.</p>
+                        <br>
+
+                        <nav class="level is-mobile">
+                            <button class="level-item button is-sparta" onclick="sign_up()">
+                                회원가입
+                            </button>
+                            <button class="level-item button is-sparta is-outlined" onclick="window.location.href='/'">
+                                취소
+                            </button>
+                        </nav>
+                    </div>
+
+                </div>
+            </article>
+        </div>
+
+    </div>
+</section>
+</body>
+</html>
+

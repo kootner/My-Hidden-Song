@@ -1,0 +1,417 @@
+{% extends "header.html" %}
+{% block content %}
+    <style>
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .title {
+            text-align: center;
+            font-family: 'Courier Prime', monospace;
+            font-size: 80px;
+            color: #fff;
+            -webkit-text-stroke: 1px #000;
+        }
+
+        .is-sparta {
+            background-color: #8e44ad;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        h1 {
+            font-size: 54px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            background-color: #e0e0e0;
+            height: 550px;
+            position: relative;
+        }
+
+        .box {
+            background-color: #e0e0e0;
+            box-shadow: none;
+        }
+
+        .input {
+            font-weight: bold;
+        }
+
+        .button:hover {
+            color: #8e44ad;
+            background-color: #fff;
+            transition-duration: 0.3s;
+        }
+
+        #gini_modal {
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            z-index: 99;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            display: none;
+        }
+
+        #gini_modal_img {
+            margin: 0 auto;
+            width: 600px;
+            height: 600px;
+            position: absolute;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 10px solid #8e44ad;
+        }
+
+
+        #music-info {
+            width: 400px;
+            height: 350px;
+            display: none;
+            box-sizing: border-box;
+            position: relative;
+            float: right;
+            top: -370px;
+            right: 50px;
+            text-align: center;
+        }
+
+        #search-info {
+            width: 400px;
+            height: 350px;
+            display: none;
+            box-sizing: border-box;
+            position: relative;
+            float: left;
+            top: -380px;
+            left: 50px;
+            cursor: pointer;
+        }
+
+        #music-info > p {
+            font-weight: bold;
+        }
+
+        #help-album {
+            width: 300px;
+            height: 300px;
+            border: 20px #8e44ad double;
+            border-radius: 10px;
+        }
+
+        .button_logout {
+            width: 180px;
+            height: 50px;
+            background-color: #fff;
+            color: #8e44ad;
+            position: absolute;
+            left: 160px;
+            top: 100px;
+        }
+
+        .search-box {
+            background: #cea2e0;
+            color: white;
+            width: 82px;
+            height: 82px;
+            width: 300px;
+            float: left;
+            margin-bottom: 5px;
+            padding-left: 10px;
+            vertical-align: middle;
+            line-height: 38px;
+            border-radius: 0px 2px 2px 0;
+        }
+
+        #search-artist {
+            font-size: 18px;
+            font-weight: bold;
+
+        }
+
+        #search-music {
+            font-size: 14px;
+            display: block;
+
+        }
+
+
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- 제이쿼리 쿠키 삭제 cdn-->
+
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+
+    <script>
+
+        $().ready(function () {
+
+
+            $("#how_to_gini").click(function () {
+                $("#gini_modal").show();
+            })
+            $("#gini_modal").click(function () {
+                $("#gini_modal").hide();
+            })
+
+
+        })
+
+        function add_song() {
+            let album = $("#help-album").attr("src")
+            let music = $("#help-music").text()
+            let artist = $("#help-artist").text()
+            let comment = $("#input-comment").val()
+            let youtube_url = $("#input-youtube_url").val()
+            let gini_url = $("#help-gini_url").text()
+            if (gini_url == "") {
+                alert("노래 불러오기를 해주세요")
+                return
+            }
+            if (youtube_url == "") {
+                alert("유튜브 url을 입력해 주세요")
+                return
+            }
+            if (comment == "") {
+                alert("코멘트를 입력해 주세요")
+                return
+            }
+            $.ajax({
+                type: "GET",
+                url: "/add_song",
+                data: {
+                    album: album,
+                    music: music,
+                    artist: artist,
+                    comment: comment,
+                    youtube_url: youtube_url,
+                    gini_url: gini_url
+                },
+                success: function (response) {
+                    if (response['result'] == "success") {
+                        alert("노래 추가 성공")
+                        window.location.replace("/music_list")
+                    } else {
+                        alert(response["msg"])
+                    }
+                }
+            });
+
+        }
+
+        function check_song_by_click(id) {
+            $("#input-gini_url").val("https://www.genie.co.kr/detail/songInfo?xgnm=" + id)
+            check_song()
+        }
+
+        function check_song() {
+            let gini_url = $("#input-gini_url").val()
+
+            $.ajax({
+                type: "GET",
+                url: "/check_song",
+                data: {
+                    gini_url: gini_url
+                },
+                success: function (response) {
+                    if (response["result"] == "fail") {
+                        $("#help-album").attr("src", "")
+                        $("#help-music").text("")
+                        $("#help-artist").text("")
+                        $("#help-gini_url").text("")
+                        $("#input-gini_url").focus()
+                        alert(response["msg"])
+                    } else {
+                        $("#help-album").attr("src", response["album"])
+                        $("#help-music").text(response["music"])
+                        $("#help-artist").text(response["artist"])
+                        $("#help-gini_url").text(response["gini_url"])
+                        $("#music-info").show()
+                    }
+
+                },
+                beforeSend: function (response) {
+                    $("#help-loading").addClass("is-loading")
+                },
+                complete: function (response) {
+                },
+                error: function (response) {
+                    alert("곡 정보를 불러오는데 실패했습니다.")
+                    $("#help-album").attr("src", "")
+                    $("#help-music").text("")
+                    $("#help-artist").text("")
+                    $("#help-gini_url").text("")
+                    $("#music-info").hide()
+                }
+            });
+
+        }
+
+        function logout() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = '/login'
+        }
+
+        let debounce = null;
+
+        function keyUp(t) {
+
+
+            clearTimeout(debounce)
+            debounce = setTimeout(() => {
+                console.log(t.value)
+                $.ajax({
+                    type: "GET",
+                    url: "/search",
+                    data: {
+                        search_text: t.value
+                    },
+                    success: function (response) {
+                        console.log(response['song'])
+                        let songs = response['song']
+                        $("#search-info").empty()
+                        if (songs == undefined) {
+                            $("#search-info").hide();
+
+                        } else {
+                            $("#search-info").show();
+
+                            for (let i = 0; i < songs.length; i++) {
+                                let song = songs[i]
+                                $("#search-info").append(`
+                            <div onclick="check_song_by_click(${song['id']})">
+                                <img id="search-album" src="https://image.genie.co.kr${song['image']}" style="float:left;">
+                                    <div class="search-box">
+                                        <span id="search-artist">${song['word']}</span>
+                                        <span id="search-music">${song['field1']}</span>
+                                    </div>
+
+                            </div>
+                        `)
+                            }
+                        }
+
+                    },
+                    beforeSend: function (response) {
+                    },
+                    complete: function (response) {
+                    },
+                    error: function (response) {
+                    }
+                });
+            }, 500)
+        }
+    </script>
+
+
+
+    <section class="section">
+        <button class="button button_logout" onclick="logout()">로그아웃</button>
+
+        <div id="gini_modal">
+            <img src="../static/hidden_song_modal_img.jpg" id="gini_modal_img" alt="">
+        </div>
+
+
+        <div class="container">
+
+
+            <div class="box" style="max-width: 480px;margin:auto">
+                <h1>노래 추가하기</h1>
+                <article class="media">
+
+                    <div class="media-content">
+                        <div class="content">
+
+                            <div class="field">
+                                <div class="control has-icons-left">
+                                    <input id="input-search" class="input" type="text" placeholder="검색"
+                                           onkeyup="keyUp(this)">
+                                    <span class="icon is-small is-left"><i class="fa fa-search"></i></span>
+                                </div>
+                            </div>
+                            <div class="field has-addons">
+
+                                <div class="control has-icons-left" style="width:100%">
+
+                                    <input id="input-gini_url" class="input" type="text" placeholder="지니 URL">
+
+                                    <span class="icon is-small is-left"><i class="fa fa-link"></i></span>
+                                </div>
+
+
+                                <div id="btn-check-dup" class="control">
+
+
+                                    <button class="button is-sparta" id="how_to_gini">
+                                        <i class="fa fa-question-circle mr-1"></i>지니 URL 넣는 방법
+                                    </button>
+                                </div>
+
+                            </div>
+                            <p id="help-loading" class="help"></p>
+
+
+                            <div class="field">
+                                <nav class="level is-mobile">
+                                    <button class="level-item button is-sparta" onclick="check_song()">
+                                        노래 불러오기
+                                    </button>
+                                </nav>
+                            </div>
+                            <div class="field">
+                                <div class="control has-icons-left">
+                                    <input id="input-youtube_url" class="input" type="text" placeholder="유튜브 URL">
+                                    <span class="icon is-small is-left"><i class="fa fa-link"></i></span>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control has-icons-left">
+                                    <textarea id="input-comment" class="textarea" maxlength="100"
+                                              placeholder="코멘트"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div id="sign-up-box">
+                            <nav class="level is-mobile">
+                                <button class="level-item button is-sparta" onclick="add_song()">
+                                    노래 추가
+                                </button>
+                                <button class="level-item button is-sparta is-outlined"
+                                        onclick="window.location.href='/'">
+                                    취소
+                                </button>
+                            </nav>
+                        </div>
+
+
+                    </div>
+                </article>
+            </div>
+
+            <div id="music-info">
+                <img id="help-album">
+                <p id="help-music"></p>
+                <p id="help-artist"></p>
+                <p id="help-gini_url" style="display: none;"></p>
+            </div>
+
+            <div id="search-info">
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}

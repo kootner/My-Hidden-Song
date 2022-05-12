@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>music list | My Hidden Song</title>
+    <link rel="shortcut icon" href="../static/favicon.png" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <meta property="og:title" content="My-Hidden-Song"/>
+    <meta property="og:description" content="나만의 숨겨진 노래를 올려주세요!"/>
+    <meta property="og:image" content="../static/MHS_og_img.png"/>
+    <!-- Required meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Stylish&display=swap" rel="stylesheet">
+
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&display=swap" rel="stylesheet">
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/4fc2c0a9d6.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+
+    <!-- 제이쿼리 쿠키 삭제 cdn-->
+
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+
+    <style>
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #000;
+        }
+
+        .title {
+            text-align: center;
+            font-family: 'Courier Prime', monospace;
+            font-size: 80px;
+            color: #fff;
+            -webkit-text-stroke: 1px #000;
+            cursor: pointer;
+        }
+
+        .is-250x250 {
+            width: 350px;
+            height: 350px;
+            background-color: #8c8c8c;
+            margin-left: 32px;
+            margin-top: 32px;
+        }
+
+        .is-250x250 img {
+            width: 350px;
+            height: 350px;
+        }
+
+        .card {
+            background-color: #e0e0e0;
+            width: 414px;
+            height: 664px;
+            margin-left: 160px;
+            margin-bottom: 100px;
+            box-sizing: border-box;
+            float: left;
+        }
+
+        .card-content {
+            width: 414px;
+            padding-left: 32px;
+            padding-right: 32px;
+            box-sizing: border-box;
+        }
+
+        .button {
+            width: 180px;
+            height: 50px;
+            background-color: #8e44ad;
+            color: #fff;
+            position: absolute;
+            right: 180px;
+            top: 100px;
+        }
+
+        .button_logout {
+            width: 180px;
+            height: 50px;
+            background-color: #fff;
+            color: #8e44ad;
+            position: absolute;
+            left: 160px;
+            top: 100px;
+        }
+
+        i {
+            font-size: 30px;
+            position: absolute;
+            float: right;
+            color: #8e44ad;
+            bottom: 32px;
+            right: 32px;
+        }
+
+        .like_count {
+            font-size: 18px;
+            position: absolute;
+            font-weight: bold;
+            bottom: 35px;
+            right: 70px;
+            -webkit-text-stroke: 1px #000;
+        }
+
+        .media-content {
+            border-bottom: 4px double #000;
+            padding-bottom: 5px;
+            height: 80px;
+        }
+
+        #music {
+            font-size: 24px;
+        }
+
+        #artist {
+            font-size: 20px;
+        }
+
+        #nickname {
+            font-weight: bolder;
+        }
+
+        .heart {
+            color: #ff0000 !important;
+            cursor: pointer;
+        }
+
+        #youtube_modal {
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            z-index: 99;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            display: none;
+        }
+
+        #youtbe_box {
+            margin: 0 auto;
+            width: 802px;
+            height: 451px;
+            position: absolute;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #cea2e0;
+        }
+
+        #click_youtube {
+            margin: 0 auto;
+            width: 802px;
+            height: 451px;
+            position: absolute;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 10px solid #8e44ad;
+        }
+
+        .bg_change {
+            background-color: #e0e0e0;
+            animation: bg_change 1.5s 1;
+        }
+
+        @keyframes bg_change {
+            0% {
+                background-color: #e0e0e0;
+            }
+            50% {
+                background-color: #cea2e0;
+            }
+
+            100% {
+                background-color: #e0e0e0;
+            }
+        }
+
+
+    </style>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("i").mouseover(function () {
+                if (!$(this).hasClass("heart")) {
+                    $(this).css({"color": "#ff0000", "cursor": "pointer", "transition-duration": "0.3s"});
+                }
+            });
+
+            $("i").mouseout(function () {
+                if (!$(this).hasClass("heart")) {
+                    $(this).css({"color": "#8e44ad", "transition-duration": "0.3s"});
+                }
+            });
+            $(".button").mouseover(function () {
+                $(this).css({"color": "#8e44ad", "background-color": "#fff", "transition-duration": "0.3s"});
+            });
+
+            $(".button").mouseout(function () {
+                $(this).css({"color": "#fff", "background-color": "#8e44ad", "transition-duration": "0.3s"});
+            });
+
+
+            $(".button_logout").mouseover(function () {
+                $(this).css({"color": "#fff", "background-color": "#8e44ad", "transition-duration": "0.3s"});
+            });
+
+            $(".button_logout").mouseout(function () {
+                $(this).css({"color": "#8e44ad", "background-color": "#fff", "transition-duration": "0.3s"});
+
+            });
+
+            $(".card-image").click(function () {
+                getYoutubeUrl($(this).attr("youtube_url")),
+                    $("#youtube_modal").show();
+            })
+            $("#youtube_modal").click(function () {
+                $(this).hide(),
+                    $("#click_youtube").removeAttr('src');
+
+            });
+
+
+        });
+        function getLikeCountIndex(i){
+            return parseInt($(".like_count:eq("+i+")").text())
+        }
+        function getIndex(t){
+            console.log(parseInt($(".card").index(t)))
+        }
+        let is_processing=false
+        function click_heart(id) {
+            if(is_processing){
+                return
+            }
+            is_processing = true
+            let sum_reco = 0
+            if ($("#recommend_icon" + id).hasClass("heart")) {
+                sum_reco--
+            } else {
+                sum_reco++
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/heart",
+                data: {id: id, sum_reco: sum_reco},
+                success: function (response) {
+                    if (response['result'] == "success") {
+                        {#window.location.href = "/"#}
+                        if(sum_reco>0){
+                            {#    추천함 #}
+                            $("#recommend_icon" + id).addClass("heart")
+                            $("#recommend_icon" + id).css("color","#ff0000")
+                            $("#recommend_count" + id).text(parseInt($("#recommend_count" + id).text())+1)
+                        }else {
+                            $("#recommend_icon" + id).removeClass("heart")
+                            $("#recommend_icon" + id).css("color","#8e44ad")
+                            $("#recommend_count" + id).text(parseInt($("#recommend_count" + id).text())-1)
+                        }
+                        let index=parseInt($(".like_count").index($("#recommend_count" + id)))
+
+                        let temp_index = index
+                        while (temp_index > 0 && temp_index < $(".like_count").length){
+                            console.log("while")
+                            if(getLikeCountIndex(temp_index-1) < getLikeCountIndex(index)) {
+                                console.log(temp_index,index, "index-1")
+                                temp_index = temp_index-1
+                                continue
+                            }
+                            if (getLikeCountIndex(temp_index+1) > getLikeCountIndex(index)) {
+                                console.log(temp_index, "i+1")
+                                temp_index = temp_index+1
+                                continue
+                            }
+                            break
+                        }
+                        if(index > temp_index) {
+                            console.log(index,"after",temp_index)
+                            $(".card:eq("+temp_index+")").before($(".card:eq("+index+")"))
+                            $(".card:eq("+temp_index+")").addClass("bg_change").delay(1500).queue(function(){ $(this).removeClass("bg_change").dequeue(); });
+
+                                var card_offset = $(".card:eq("+temp_index+")").offset().top;
+                                $('html,body').animate({
+                                        scrollTop: card_offset - 100
+                                    },
+                                    'slow');
+                        } else if (index < temp_index) {
+                            console.log(index,"before",temp_index)
+                            $(".card:eq("+temp_index+")").after($(".card:eq("+index+")"))
+                            $(".card:eq("+temp_index+")").addClass("bg_change").delay(1500).queue(function(){ $(this).removeClass("bg_change").dequeue(); });
+
+                                var card_offset = $(".card:eq("+temp_index+")").offset().top;
+                                $('html,body').animate({
+                                        scrollTop: card_offset - 100
+                                    },
+                                    'slow');
+                        } else {
+                            $(".card:eq("+temp_index+")").addClass("bg_change").delay(1500).queue(function(){ $(this).removeClass("bg_change").dequeue(); });
+                        }
+                    }
+                },
+                complete:  function (response) {
+                    is_processing = false
+                }
+            })
+        }
+
+
+        function logout() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = '/login'
+        }
+
+        function getYoutubeUrl(youtube_url) {
+            $.ajax({
+                type: "GET",
+                url: "/getYoutube",
+                data: {youtube_url: youtube_url},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        $("#click_youtube").attr("src", "https://www.youtube.com/embed/" + response['youtubeUrl'])
+                    } else {
+                        alert(response['msg']);
+                    }
+                }
+            });
+        }
+
+    </script>
+
+</head>
+<body>
+<section class="hero">
+    <div class="hero-body">
+        <p class="title" onclick="window.location.href='/'">
+            My-Hidden-Song
+        </p>
+        <button class="button button_logout" onclick="logout()">로그아웃</button>
+        <button class="button" onclick="window.location.href='/add_song_page'">노래 업로드</button>
+    </div>
+</section>
+
+
+<div id="youtube_modal">
+    <div id="youtbe_box">
+        <iframe width="560" height="315" src="" id="click_youtube"></iframe>
+
+    </div>
+</div>
+
+
+<div id="card-box">
+    {% for music_data in music_datas %}
+        <div class="card" onclick="getIndex(this)">
+            <div class="card-image" youtube_url="{{ music_data['youtube_url'] }}">
+                <figure class="image is-250x250">
+                    <img src="{{ music_data['album'] }}" alt="Placeholder image" id="album_click">
+                </figure>
+            </div>
+            <div class="card-content">
+                <div class="media">
+                    <div class="media-content">
+                        <p>{{ music_data['music'] }}</p>
+                        <p>{{ music_data['artist'] }}</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <span>{{ music_data['nick'] }}</span> // <span>{{ music_data['comment'] }}</span>
+                </div>
+                <span class="like_count" id="recommend_count{{ music_data['_id'] }}">{{ music_data['reco'] }}</span>
+                <i class="fa-solid fa-heart {% if music_data['_id'] in user_info['reco_music'] %} heart {% endif %}"
+                   onclick="click_heart('{{ music_data['_id'] }}')" id="recommend_icon{{ music_data['_id'] }}"> </i>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+</body>
+</html>
+
