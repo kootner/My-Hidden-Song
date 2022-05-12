@@ -1,0 +1,396 @@
+ /* 헤더 css (header.html) */
+
+    * {
+        font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .title {
+        text-align: center;
+        font-family: 'Courier Prime', monospace;
+        font-size: 80px;
+        color: #fff;
+        -webkit-text-stroke: 1px #000;
+        cursor: pointer;
+    }
+
+/* 인덱스 (index.html) css */
+
+ * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .title {
+            text-align: center;
+            font-family: 'Courier Prime', monospace;
+            font-size: 80px;
+            color: #fff;
+            -webkit-text-stroke: 1px #000;
+            cursor: pointer;
+        }
+
+        .box {
+            background-color: #e0e0e0;
+            margin-left: 50px;
+        }
+
+        .content {
+            margin-top: 19%;
+        }
+
+        .input {
+            font-weight: bold;
+        }
+
+        .is-sparta {
+            background-color: #8e44ad;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .button:hover {
+            color: #8e44ad;
+            background-color: #fff;
+            transition-duration: 0.3s;
+        }
+
+
+/*  뮤직 리스트 (music_list.html) */
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #000;
+        }
+
+        .title {
+            text-align: center;
+            font-family: 'Courier Prime', monospace;
+            font-size: 80px;
+            color: #fff;
+            -webkit-text-stroke: 1px #000;
+            cursor: pointer;
+        }
+
+        .is-250x250 {
+            width: 350px;
+            height: 350px;
+            background-color: #8c8c8c;
+            margin-left: 32px;
+            margin-top: 32px;
+        }
+
+        .is-250x250 img {
+            width: 350px;
+            height: 350px;
+        }
+
+        .card {
+            background-color: #e0e0e0;
+            width: 414px;
+            height: 664px;
+            margin-left: 160px;
+            margin-bottom: 100px;
+            box-sizing: border-box;
+            float: left;
+        }
+
+        .card-content {
+            width: 414px;
+            padding-left: 32px;
+            padding-right: 32px;
+            box-sizing: border-box;
+        }
+
+        .button {
+            width: 180px;
+            height: 50px;
+            background-color: #8e44ad;
+            color: #fff;
+            position: absolute;
+            right: 180px;
+            top: 100px;
+        }
+
+        .button_logout {
+            width: 180px;
+            height: 50px;
+            background-color: #fff;
+            color: #8e44ad;
+            position: absolute;
+            left: 160px;
+            top: 100px;
+        }
+
+        i {
+            font-size: 30px;
+            position: absolute;
+            float: right;
+            color: #8e44ad;
+            bottom: 32px;
+            right: 32px;
+        }
+
+        .like_count {
+            font-size: 18px;
+            position: absolute;
+            font-weight: bold;
+            bottom: 35px;
+            right: 70px;
+            -webkit-text-stroke: 1px #000;
+        }
+
+        .media-content {
+            border-bottom: 4px double #000;
+            padding-bottom: 5px;
+            height: 80px;
+        }
+
+        #music {
+            font-size: 24px;
+        }
+
+        #artist {
+            font-size: 20px;
+        }
+
+        #nickname {
+            font-weight: bolder;
+        }
+
+        .heart {
+            color: #ff0000 !important;
+            cursor: pointer;
+        }
+
+        #youtube_modal {
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            z-index: 99;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            display: none;
+        }
+
+        #youtbe_box {
+            margin: 0 auto;
+            width: 802px;
+            height: 451px;
+            position: absolute;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #cea2e0;
+        }
+
+        #click_youtube {
+            margin: 0 auto;
+            width: 802px;
+            height: 451px;
+            position: absolute;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 10px solid #8e44ad;
+        }
+
+        .bg_change {
+            background-color: #e0e0e0;
+            animation: bg_change 1.5s 1;
+        }
+
+        @keyframes bg_change {
+            0% {
+                background-color: #e0e0e0;
+            }
+            50% {
+                background-color: #cea2e0;
+            }
+
+            100% {
+                background-color: #e0e0e0;
+            }
+        }
+
+/* 회원가입 (sign_up_page.html) css */
+      * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .title {
+            text-align: center;
+            font-family: 'Courier Prime', monospace;
+            font-size: 80px;
+            color: #fff;
+            -webkit-text-stroke: 1px #000;
+            cursor: pointer;
+        }
+
+        .is-sparta {
+            background-color: #8e44ad;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        h1 {
+            font-size: 54px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            background-color: #e0e0e0;
+            height: 550px;
+        }
+
+        .box {
+            background-color: #e0e0e0;
+            box-shadow: none;
+        }
+
+        .input {
+            font-weight: bold;
+        }
+
+        .button:hover {
+            color: #8e44ad;
+            background-color: #fff;
+            transition-duration: 0.3s;
+        }
+/* 노래 추가 (add_song.html) css */
+
+ * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+
+        .is-sparta {
+            background-color: #8e44ad;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        h1 {
+            font-size: 54px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            background-color: #e0e0e0;
+            height: 550px;
+            position: relative;
+        }
+
+        .box {
+            background-color: #e0e0e0;
+            box-shadow: none;
+        }
+
+        .input {
+            font-weight: bold;
+        }
+
+        .button:hover {
+            color: #8e44ad;
+            background-color: #fff;
+            transition-duration: 0.3s;
+        }
+
+        #gini_modal {
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            z-index: 99;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            display: none;
+        }
+
+        #gini_modal_img {
+            margin: 0 auto;
+            width: 600px;
+            height: 600px;
+            position: absolute;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 10px solid #8e44ad;
+        }
+
+
+        #music-info {
+            width: 400px;
+            height: 350px;
+            display: none;
+            box-sizing: border-box;
+            position: relative;
+            float: right;
+            top: -370px;
+            right: 50px;
+            text-align: center;
+        }
+
+        #search-info {
+            width: 400px;
+            height: 350px;
+            display: none;
+            box-sizing: border-box;
+            position: relative;
+            float: left;
+            top: -380px;
+            left: 50px;
+            cursor: pointer;
+        }
+
+        #music-info > p {
+            font-weight: bold;
+        }
+
+        #help-album {
+            width: 300px;
+            height: 300px;
+            border: 20px #8e44ad double;
+            border-radius: 10px;
+        }
+
+        .button_logout {
+            width: 180px;
+            height: 50px;
+            background-color: #fff;
+            color: #8e44ad;
+            position: absolute;
+            left: 160px;
+            top: 100px;
+        }
+
+        .search-box {
+            background: #cea2e0;
+            color: white;
+            width: 82px;
+            height: 82px;
+            width: 300px;
+            float: left;
+            margin-bottom: 5px;
+            padding-left: 10px;
+            vertical-align: middle;
+            line-height: 38px;
+            border-radius: 0px 2px 2px 0;
+        }
+
+        #search-artist {
+            font-size: 18px;
+            font-weight: bold;
+
+        }
+
+        #search-music {
+            font-size: 14px;
+            display: block;
+
+        }
+
+
