@@ -78,8 +78,12 @@
     </style>
 
     <script>
-        function is_nickname(asValue) {
+        function is_name(asValue) {
             var regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{2,10}$/;
+            return regExp.test(asValue);
+        }
+        function is_nickname(asValue) {
+            var regExp = /^(?=.*[a-zA-Zㄱ-ㅎ가-힣])[-a-zA-Zㄱ-ㅎ가-힣0-9_.]{2,10}$/;
             return regExp.test(asValue);
         }
 
@@ -96,7 +100,7 @@
                 $("#input-id").focus()
                 return;
             }
-            if (!is_nickname(id)) {
+            if (!is_name(id)) {
                 $("#help-id").text("아이디의 형식을 확인해주세요. 영문과 숫자, 일부 특수문자(._-) 사용 가능. 2-10자 길이").removeClass("is-safe").addClass("is-danger")
                 $("#input-id").focus()
                 return;
@@ -109,7 +113,6 @@
                     id_give: id
                 },
                 success: function (response) {
-
                     if (response["exists"]) {
                         $("#help-id").text("이미 존재하는 아이디입니다.").removeClass("is-safe").addClass("is-danger")
                         $("#input-id").focus()
@@ -131,7 +134,7 @@
                 return;
             }
             if (!is_nickname(nick)) {
-                $("#help-nick").text("닉네임에 형식을 확인해주세요. 영문과 숫자, 일부 특수문자(._-) 사용 가능. 2-10자 길이").removeClass("is-safe").addClass("is-danger")
+                $("#help-nick").text("닉네임에 형식을 확인해주세요. 영문과 숫자, 한글 그리고 일부 특수문자(._-) 사용 가능. 2-10자 길이").removeClass("is-safe").addClass("is-danger")
                 $("#input-nick").focus()
                 return;
             }
