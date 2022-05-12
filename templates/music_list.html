@@ -250,6 +250,8 @@
 
 
         });
+
+
         function getLikeCountIndex(i){
             return parseInt($(".like_count:eq("+i+")").text())
         }
@@ -258,17 +260,23 @@
         }
         let is_processing=false
         function click_heart(id) {
+            {# 추천버튼 누름 #}
             if(is_processing){
                 return
             }
             is_processing = true
+
+
             let sum_reco = 0
             if ($("#recommend_icon" + id).hasClass("heart")) {
+                {# 추천버튼이 heart 클래스 갖고 있을때 #}
                 sum_reco--
             } else {
+                {# 추천버튼이 heart 클래스  #}
                 sum_reco++
             }
 
+            {# 추천수 플러스 마이너스 하는 과정 #}
             $.ajax({
                 type: "POST",
                 url: "/heart",
@@ -289,22 +297,35 @@
                         let index=parseInt($(".like_count").index($("#recommend_count" + id)))
 
                         let temp_index = index
+                        {# temp_index 는 지금 추천 눌린 객체가 최종적으로 이동해야 하는 인덱스
+                          index는 현재 인덱스
+                         #}
                         while (temp_index > 0 && temp_index < $(".like_count").length){
+                            {# 최종 위치가 첫번쨰이거나 마지막이 아닐때 #}
                             console.log("while")
                             if(getLikeCountIndex(temp_index-1) < getLikeCountIndex(index)) {
+                                {# 이전 카드와 추천수 비교 getLikeCountIndex 함수는 인덱스를 주면 해당 인덱스 카드의 추천 수를 돌려줌
+
+                                이전카드의 추천수가 현재 카드의 추천수 보다 작으면 최종 위치를 한칸 마이너스
+                                #}
                                 console.log(temp_index,index, "index-1")
                                 temp_index = temp_index-1
                                 continue
                             }
                             if (getLikeCountIndex(temp_index+1) > getLikeCountIndex(index)) {
+                                {# 다음 카드와 추천수 비교 getLike어쩌구 함수는 인덱스를 주면 해당 인덱스 카드의 추천 수를 돌려줌
+
+                                다음카드의 추천수가 현재 카드의 추천수 보다 크면 최종 위치를 한칸 플러스
+                                #}
                                 console.log(temp_index, "i+1")
                                 temp_index = temp_index+1
                                 continue
                             }
                             break
                         }
+                        {# 현재 인덱스가 최종으로 가야할 인덱스 보다 클때 #}
                         if(index > temp_index) {
-                            console.log(index,"after",temp_index)
+                            console.log(index,"before",temp_index)
                             $(".card:eq("+temp_index+")").before($(".card:eq("+index+")"))
                             $(".card:eq("+temp_index+")").addClass("bg_change").delay(1500).queue(function(){ $(this).removeClass("bg_change").dequeue(); });
 
@@ -314,7 +335,7 @@
                                     },
                                     'slow');
                         } else if (index < temp_index) {
-                            console.log(index,"before",temp_index)
+                            console.log(index,"after",temp_index)
                             $(".card:eq("+temp_index+")").after($(".card:eq("+index+")"))
                             $(".card:eq("+temp_index+")").addClass("bg_change").delay(1500).queue(function(){ $(this).removeClass("bg_change").dequeue(); });
 
@@ -345,7 +366,7 @@
             alert('로그아웃!')
             window.location.href = '/login'
         }
-
+        {# 클릭시 나오는 유튜브 영상 주소 형식 변경 #}
         function getYoutubeUrl(youtube_url) {
             $.ajax({
                 type: "GET",

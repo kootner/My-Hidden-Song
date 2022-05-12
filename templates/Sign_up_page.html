@@ -79,6 +79,7 @@
             }
             let a =false
             $("#help-id").addClass("is-loading")
+            {# 아이디 값으로 존재하는 아이디 인지 검사 #}
             $.ajax({
                 type: "POST",
                 url: "/sign_up/check_dup",
@@ -116,6 +117,7 @@
             }
             let a =false
             $("#help-nick").addClass("is-loading")
+            {# 닉네임 값으로 존재하는 닉네임 인지 검사 #}
             $.ajax({
                 type: "POST",
                 url: "/sign_up/check_dup_nick",
@@ -135,6 +137,7 @@
                     $("#help-nick").removeClass("is-loading")
                 }
             });
+
             return a
         }
 
@@ -144,9 +147,9 @@
             let pw2 = $("#input-pw2").val()
             let nick = $("#input-nick").val()
             console.log(id, pw, pw2, nick)
-            console.log(check_dup())
-            console.log(check_dup_nick())
+
             if (!check_dup()) {
+                {# check_dup 함수는 중복되는 아이디가 존재하면 (가입 불가) false 반환 가입 가능하면 true 반환#}
                 return;
             } else if (!check_dup_nick()) {
                 return;
@@ -190,6 +193,7 @@
             } else {
                 $("#help-pw2").text("비밀번호가 일치합니다.").removeClass("is-danger").addClass("is-success")
             }
+            {# 유저 데이터를 서버로 보내서 디비에 저장 #}
             $.ajax({
                 type: "POST",
                 url: "/sign_up/save",

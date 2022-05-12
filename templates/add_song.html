@@ -215,7 +215,7 @@
 
         function check_song() {
             let gini_url = $("#input-gini_url").val()
-
+            {# 지니 url로 노래 정보 파싱 #}
             $.ajax({
                 type: "GET",
                 url: "/check_song",
@@ -271,6 +271,7 @@
             clearTimeout(debounce)
             debounce = setTimeout(() => {
                 console.log(t.value)
+                {# 검색어를 통한 지니 파싱 #}
                 $.ajax({
                     type: "GET",
                     url: "/search",

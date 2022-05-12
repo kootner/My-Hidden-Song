@@ -48,7 +48,7 @@
         $(document).ready(function () {
             getYoutubeUrl()
         });
-
+        {# 유튜브 url 랜덤으로 하나 뽑고 화면에 나오게끔 변경해줌 #}
         function getYoutubeUrl() {
             $.ajax({
                 type: "GET",
@@ -83,6 +83,7 @@
             } else {
                 $("#help-pw-login").text("")
             }
+            {# 아이디 비번으로 회원 맞는지 확인 #}
             $.ajax({
                 type: "POST",
                 url: "/sign_in",
